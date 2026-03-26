@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serendipity ✦ Mystery Travel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --amber: #E8A87C;
+    --terracotta: #C4654A;
+    --saffron: #F2A945;
+    --gold: #D4A847;
+    --teal: #2A7F7F;
+    --deep-teal: #1A5F6F;
+    --forest: #2D5016;
+    --cream: #FDF6EC;
+    --dark: #0F0C09;
+    --glass: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.15);
+    --text-light: rgba(255,255,255,0.9);
+    --text-muted: rgba(255,255,255,0.55);
+  }
+
+  html, body {
+    height: 100%;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--text-light);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── SCREEN SYSTEM ── */
+  .screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(.4,0,.2,1), transform 0.6s cubic-bezier(.4,0,.2,1);
+    z-index: 1;
+  }
+  .screen.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+    z-index: 10;
+  }
+  .screen.exit {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
+
+  /* ── BACKGROUND LAYERS ── */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Animated gradient mesh */
+  .bg-mesh {
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(232,168,124,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(42,127,127,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(196,101,74,0.15) 0%, transparent 70%),
+      #0F0C09;
+    animation: meshShift 12s ease-in-out infinite alternate;
+  }
+  @keyframes meshShift {
+    0%   { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(15deg); }
+  }
+
+  /* Floating particles / stars */
+  .particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+    animation: floatParticle linear infinite;
+  }
+
+  @keyframes floatParticle {
+    0%   { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.4; }
+    100% { transform: translateY(-20px) translateX(var(--drift)) scale(1.2); opacity: 0; }
+  }
+
+  /* Moving clouds */
+  .cloud-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+    opacity: 0.04;
+  }
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50px;
+    filter: blur(20px);
+    animation: driftCloud linear infinite;
+  }
+  @keyframes driftCloud {
+    0%   { transform: translateX(-200px); }
+    100% { transform: translateX(120vw); }
+  }
+
+  /* ── TYPOGRAPHY ── */
+  .serif    { font-family: 'Cormorant Garamond', serif; }
+  .mono     { font-family: 'Space Mono', monospace; }
+
+  h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; }
+  h2 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+
+  /* ── GLASS CARD ── */
+  .glass {
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 20px;
+  }
+  .glass-dark {
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+  }
+
+  /* ── BUTTONS ── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 36px;
+    border-radius: 100px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #E8A87C, #C4654A, #F2A945);
+    background-size: 200% 200%;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: gradientShift 4s ease infinite;
+    box-shadow: 0 8px 32px rgba(196,101,74,0.4);
+  }
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50%       { background-position: 100% 50%; }
+  }
+  .btn-primary:hover  { transform: scale(1.04); box-shadow: 0 12px 40px rgba(196,101,74,0.55); }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: inherit;
+  }
+  .btn-primary:active::after { opacity: 1; }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: 100px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    color: var(--text-light);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+  }
+  .btn-ghost:hover  { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.12); transform: scale(1.02); }
+  .btn-ghost:active { transform: scale(0.97); }
+
+  /* ── PULSE RING ── */
+  .pulse-ring {
+    animation: pulseRing 2.5s ease-in-out infinite;
+  }
+  @keyframes pulseRing {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232,168,124,0.4); }
+    50%       { box-shadow: 0 0 0 16px rgba(232,168,124,0); }
+  }
+
+  /* ══════════════════════════════════════
+     SCREEN 1 — HOME / INPUT
+  ══════════════════════════════════════ */
+  #screen-home {
+    min-height: 100vh;
+    padding: 0 16px 40px;
+  }
+
+  .home-hero {
+    text-align: center;
+    padding: 60px 0 36px;
+    position: relative;
+  }
+  .home-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber), var(--terracotta));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    animation: spin 20s linear infinite;
+    box-shadow: 0 4px 16px rgba(196,101,74,0.5);
+  }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+  .logo-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+  .home-title {
+    font-size: clamp(40px, 10vw, 58px);
+    line-height: 1.1;
+    font-weight: 300;
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+  .home-title em { color: var(--amber); font-style: italic; }
+  .home-sub {
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 300px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  /* Floating marker */
+  .map-marker {
+    display: inline-block;
+    animation: markerFloat 3s ease-in-out infinite;
+    font-size: 28px;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 4px 12px rgba(232,168,124,0.5));
+  }
+  @keyframes markerFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-10px); }
+  }
+
+  /* Form card */
+  .form-card {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 28px 24px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  /* Mood selector */
+  .mood-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .mood-card {
+    padding: 16px 12px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.25s cubic-bezier(.4,0,.2,1);
+    user-select: none;
+  }
+  .mood-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.09); }
+  .mood-card:active { transform: scale(0.96); }
+  .mood-card.selected {
+    border-color: var(--amber);
+    background: rgba(232,168,124,0.12);
+    box-shadow: 0 0 20px rgba(232,168,124,0.25), inset 0 0 20px rgba(232,168,124,0.05);
+    transform: translateY(-3px);
+  }
+  .mood-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+  .mood-label { font-size: 13px; font-weight: 500; color: var(--text-light); }
+  .mood-desc { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* Budget slider */
+  .slider-wrap { margin-bottom: 28px; }
+  .slider-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .slider-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: var(--amber);
+  }
+  .slider-val span { font-size: 14px; color: var(--text-muted); }
+
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    background: linear-gradient(to right, var(--amber) 0%, var(--amber) var(--pct, 30%), rgba(255,255,255,0.15) var(--pct, 30%), rgba(255,255,255,0.15) 100%);
+    transition: background 0.1s;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--amber), var(--terracotta));
+    box-shadow: 0 2px 12px rgba(232,168,124,0.6);
+    cursor: grab;
+    transition: transform 0.2s;
+  }
+  input[type="range"]::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.3); }
+
+  /* Duration + Style */
+  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .chip {
+    padding: 9px 18px;
+    border-radius: 100px;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .chip:hover  { border-color: rgba(255,255,255,0.3); color: var(--text-light); transform: scale(1.04); }
+  .chip:active { transform: scale(0.96); }
+  .chip.selected {
+    border-color: var(--teal);
+    background: rgba(42,127,127,0.15);
+    color: #7ECFCF;
+    box-shadow: 0 0 14px rgba(42,127,127,0.25);
+  }
+
+  .cta-wrap { display: flex; justify-content: center; margin-top: 8px; }
+
+  /* Divider */
+  .form-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+    margin: 6px 0 22px;
+  }
+
+  /* ══════════════════════════════════════
+     SCREEN 2 — LOADING
+  ══════════════════════════════════════ */
+  #screen-loading {
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .loading-center { text-align: center; }
+
+  /* Compass */
+  .compass-outer {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 2px solid rgba(232,168,124,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+    position: relative;
+    animation: compassGlow 2s ease-in-out infinite alternate;
+    box-shadow: 0 0 40px rgba(232,168,124,0.2), inset 0 0 40px rgba(232,168,124,0.05);
+  }
+  @keyframes compassGlow {
+    0%   { box-shadow: 0 0 20px rgba(232,168,124,0.2), inset 0 0 20px rgba(232,168,124,0.05); border-color: rgba(232,168,124,0.2); }
+    100% { box-shadow: 0 0 60px rgba(232,168,124,0.4), inset 0 0 40px rgba(232,168,124,0.1); border-color: rgba(232,168,124,0.5); }
+  }
+  .compass-ring {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: compassSpin 4s ease-in-out infinite;
+  }
+  @keyframes compassSpin {
+    0%   { transform: rotate(0deg); }
+    25%  { transform: rotate(75deg); }
+    50%  { transform: rotate(165deg); }
+    75%  { transform: rotate(280deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .compass-needle {
+    width: 4px;
+    height: 50px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .needle-n {
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 28px solid var(--terracotta);
+    margin-bottom: 4px;
+    filter: drop-shadow(0 0 6px var(--terracotta));
+  }
+  .needle-s {
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 22px solid rgba(255,255,255,0.3);
+  }
+
+  /* Map dots */
+  .map-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .map-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--amber);
+    animation: dotPulse 1.2s ease-in-out infinite;
+  }
+  .map-dot:nth-child(2) { animation-delay: 0.2s; background: var(--teal); }
+  .map-dot:nth-child(3) { animation-delay: 0.4s; background: var(--saffron); }
+  @keyframes dotPulse {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50%       { transform: scale(1.6); opacity: 1; }
+  }
+
+  .loading-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    min-height: 40px;
+    transition: opacity 0.4s;
+  }
+  .loading-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  /* Scanning line */
+  .scan-line {
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--amber), transparent);
+    margin: 24px auto 0;
+    animation: scanMove 2s ease-in-out infinite;
+  }
+  @keyframes scanMove {
+    0%   { transform: scaleX(0.2); opacity: 0; }
+    50%  { transform: scaleX(1); opacity: 1; }
+    100% { transform: scaleX(0.2); opacity: 0; }
+  }
+
+  /* ══════════════════════════════════════
+     SCREEN 3 — MYSTERY REVEAL
+  ══════════════════════════════════════ */
+  #screen-mystery {
+    min-height: 100vh;
+    align-items: center;
+    padding: 40px 16px;
+  }
+  .mystery-wrap {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  .mystery-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    border: 1px solid rgba(232,168,124,0.35);
+    background: rgba(232,168,124,0.08);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 28px;
+    animation: badgePulse 2s ease-in-out infinite;
+  }
+  @keyframes badgePulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(232,168,124,0.3); }
+    50%       { box-shadow: 0 0 0 8px rgba(232,168,124,0); }
+  }
+  .mystery-title {
+    font-size: 38px;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .mystery-title em { color: var(--amber); font-style: italic; }
+  .mystery-sub {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  /* Blurred destination */
+  .dest-blur-box {
+    position: relative;
+    padding: 24px;
+    border-radius: 20px;
+    background: rgba(232,168,124,0.06);
+    border: 1px solid rgba(232,168,124,0.15);
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .dest-blur-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px;
+    font-weight: 600;
+    filter: blur(14px);
+    color: var(--amber);
+    user-select: none;
+    animation: mysteryGlow 3s ease-in-out infinite alternate;
+    letter-spacing: 2px;
+  }
+  @keyframes mysteryGlow {
+    0%   { text-shadow: 0 0 20px rgba(232,168,124,0.5); }
+    100% { text-shadow: 0 0 50px rgba(232,168,124,0.9), 0 0 80px rgba(196,101,74,0.5); }
+  }
+  .dest-blur-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .lock-icon { font-size: 32px; animation: lockFloat 2s ease-in-out infinite; }
+  @keyframes lockFloat {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50%       { transform: translateY(-6px) rotate(5deg); }
+  }
+  .lock-text { font-size: 13px; color: var(--text-muted); }
+
+  /* Countdown */
+  .countdown-wrap {
+    margin-bottom: 28px;
+  }
+  .countdown-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+  }
+  .countdown-digits {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  .cd-unit {
+    text-align: center;
+  }
+  .cd-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 36px;
+    color: var(--amber);
+    line-height: 1;
+    text-shadow: 0 0 20px rgba(232,168,124,0.5);
+    display: block;
+    animation: tickFade 1s ease-in-out infinite;
+  }
+  @keyframes tickFade {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.7; }
+  }
+  .cd-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+  .cd-sep { font-family: 'Space Mono'; font-size: 30px; color: var(--amber); align-self: flex-start; margin-top: 2px; animation: sepBlink 1s step-end infinite; }
+  @keyframes sepBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* Hint cards */
+  .hints-wrap { margin-bottom: 28px; }
+  .hint-card {
+    padding: 14px 18px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+    animation: hintSlideIn 0.5s cubic-bezier(.4,0,.2,1) both;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .hint-card:hover { transform: translateX(4px); background: rgba(255,255,255,0.08); }
+  @keyframes hintSlideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .hint-icon { font-size: 22px; flex-shrink: 0; }
+  .hint-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .hint-text strong { color: var(--text-light); font-weight: 500; }
+
+  .mystery-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+
+  /* ══════════════════════════════════════
+     SCREEN 4 — FINAL REVEAL
+  ══════════════════════════════════════ */
+  #screen-reveal {
+    min-height: 100vh;
+    padding: 0;
+    align-items: stretch;
+    overflow-y: auto;
+  }
+
+  .reveal-hero {
+    position: relative;
+    height: 55vh;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .reveal-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    animation: heroZoom 12s ease-out both;
+    transform-origin: center;
+  }
+  @keyframes heroZoom {
+    0%   { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  .reveal-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(15,12,9,0.2) 0%, rgba(15,12,9,0.85) 100%);
+  }
+  .reveal-hero-content {
+    position: absolute;
+    bottom: 28px;
+    left: 0;
+    right: 0;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .reveal-emoji { font-size: 16px; letter-spacing: 4px; margin-bottom: 10px; opacity: 0; animation: fadeInUp 0.6s 0.3s both; }
+  .reveal-dest {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(46px, 12vw, 70px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -1px;
+    opacity: 0;
+    animation: revealDest 0.8s 0.6s cubic-bezier(.4,0,.2,1) both;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  }
+  .reveal-state {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-top: 6px;
+    opacity: 0;
+    animation: fadeInUp 0.5s 1s both;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes revealDest {
+    from { opacity: 0; transform: translateY(24px) scale(0.95); letter-spacing: 8px; }
+    to   { opacity: 1; transform: translateY(0) scale(1); letter-spacing: -1px; }
+  }
+
+  /* Reveal body */
+  .reveal-body {
+    padding: 28px 16px 48px;
+    max-width: 440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .reveal-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--amber);
+    text-align: center;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeInUp 0.6s 1.3s both;
+  }
+
+  /* Info cards */
+  .info-card {
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.09);
+    margin-bottom: 14px;
+    opacity: 0;
+    animation: slideCard 0.5s cubic-bezier(.4,0,.2,1) both;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .info-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.09); }
+  .info-card:nth-child(1) { animation-delay: 1.4s; }
+  .info-card:nth-child(2) { animation-delay: 1.55s; }
+  .info-card:nth-child(3) { animation-delay: 1.7s; }
+  .info-card:nth-child(4) { animation-delay: 1.85s; }
+  .info-card:nth-child(5) { animation-delay: 2.0s; }
+  @keyframes slideCard {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .card-icon { font-size: 22px; }
+  .card-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; }
+  .card-badge {
+    margin-left: auto;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(232,168,124,0.15);
+    color: var(--amber);
+    border: 1px solid rgba(232,168,124,0.3);
+  }
+
+  /* Budget bars */
+  .budget-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+  .budget-label { color: var(--text-muted); }
+  .budget-amt { font-family: 'Space Mono'; font-size: 12px; color: var(--text-light); }
+  .budget-bar-wrap { height: 3px; background: rgba(255,255,255,0.08); border-radius: 3px; flex: 1; margin: 0 10px; }
+  .budget-bar { height: 100%; border-radius: 3px; background: linear-gradient(to right, var(--teal), var(--amber)); animation: barGrow 1s cubic-bezier(.4,0,.2,1) both; transform-origin: left; }
+  @keyframes barGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* Activities list */
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px;
+  }
+  .activity-item:last-child { border: none; padding-bottom: 0; }
+  .activity-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--amber);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .activity-name { color: var(--text-light); font-weight: 500; margin-bottom: 2px; }
+  .activity-desc { color: var(--text-muted); font-size: 12px; line-height: 1.4; }
+
+  /* Food spots */
+  .food-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .food-chip {
+    padding: 8px 14px;
+    border-radius: 100px;
+    background: rgba(42,127,127,0.1);
+    border: 1px solid rgba(42,127,127,0.25);
+    font-size: 12px;
+    color: #7ECFCF;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* Map preview */
+  .map-preview {
+    height: 120px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(42,127,127,0.15), rgba(45,80,22,0.2));
+    border: 1px solid rgba(42,127,127,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(42,127,127,0.15) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42,127,127,0.15) 1px, transparent 1px);
+    background-size: 24px 24px;
+    animation: mapScroll 8s linear infinite;
+  }
+  @keyframes mapScroll { 100% { background-position: 24px 24px; } }
+  .map-pin-center {
+    position: relative;
+    text-align: center;
+    z-index: 1;
+  }
+  .map-pin-emoji { font-size: 32px; animation: markerFloat 2s ease-in-out infinite; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5)); }
+  .map-pin-name { font-size: 11px; color: var(--amber); letter-spacing: 1px; margin-top: 4px; font-weight: 500; }
+
+  /* Reveal action buttons */
+  .reveal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    opacity: 0;
+    animation: fadeInUp 0.6s 2.2s both;
+  }
+  .reveal-actions .btn-primary { flex: 1; }
+  .reveal-actions .btn-ghost { flex: 1; }
+
+  /* Share button */
+  .share-banner {
+    margin-top: 14px;
+    padding: 16px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(232,168,124,0.1), rgba(196,101,74,0.08));
+    border: 1px solid rgba(232,168,124,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0;
+    animation: fadeInUp 0.5s 2.3s both;
+  }
+  .share-banner:hover { background: rgba(232,168,124,0.15); transform: translateY(-2px); }
+  .share-text { font-size: 13px; color: var(--text-light); }
+  .share-text small { color: var(--text-muted); font-size: 11px; display: block; }
+  .share-icon { font-size: 20px; }
+
+  /* ── WAVES ── */
+  .wave-svg {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.07;
+  }
+  .wave-path {
+    animation: waveDrift 8s ease-in-out infinite;
+  }
+  .wave-path-2 {
+    animation: waveDrift 10s ease-in-out infinite reverse;
+    opacity: 0.5;
+  }
+  @keyframes waveDrift {
+    0%, 100% { d: path("M0,40 C200,10 400,70 600,40 C800,10 1000,70 1200,40 L1200,80 L0,80 Z"); }
+    50%       { d: path("M0,55 C200,25 400,55 600,30 C800,10 1000,60 1200,45 L1200,80 L0,80 Z"); }
+  }
+
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: rgba(30,25,20,0.95);
+    border: 1px solid rgba(232,168,124,0.3);
+    border-radius: 100px;
+    padding: 12px 24px;
+    font-size: 13px;
+    color: var(--text-light);
+    backdrop-filter: blur(20px);
+    z-index: 999;
+    transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+    white-space: nowrap;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(232,168,124,0.3); border-radius: 3px; }
+
+</style>
+</head>
+<body>
+
+<!-- Background layers -->
+<div class="bg-layer bg-mesh" id="bgMesh"></div>
+<div class="bg-layer particles" id="particleLayer"></div>
+<div class="bg-layer cloud-layer" id="cloudLayer"></div>
+
+<!-- Waves -->
+<svg class="wave-svg" viewBox="0 0 1200 80" preserveAspectRatio="none">
+  <path class="wave-path" fill="var(--amber)" d="M0,40 C200,10 400,70 600,40 C800,10 1000,70 1200,40 L1200,80 L0,80 Z"/>
+  <path class="wave-path-2" fill="var(--teal)" d="M0,55 C200,25 400,55 600,30 C800,10 1000,60 1200,45 L1200,80 L0,80 Z"/>
+</svg>
+
+<!-- ══════ SCREEN 1: HOME ══════ -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
+    <div class="home-logo">
+      <div class="logo-mark">🧭</div>
+      <span class="logo-name">Serendipity </span>
+    </div>
+    <div class="map-marker">📍</div>
+    <h1 class="home-title">
+      Travel <em>without</em><br>a destination.
+    </h1>
+    <p class="home-sub">Tell us your mood. We'll handle the rest — and reveal where you're going 24 hours before.</p>
+  </div>
+
+  <div class="glass form-card">
+    <!-- Mood -->
+    <p class="section-label">✦ Your Mood</p>
+    <div class="mood-grid">
+      <div class="mood-card" onclick="selectMood(this,'Chill')">
+        <span class="mood-icon">🌊</span>
+        <div class="mood-label">Chill</div>
+        <div class="mood-desc">Beaches & serenity</div>
+      </div>
+      <div class="mood-card" onclick="selectMood(this,'Adventure')">
+        <span class="mood-icon">🏔️</span>
+        <div class="mood-label">Adventure</div>
+        <div class="mood-desc">Trails & thrills</div>
+      </div>
+      <div class="mood-card" onclick="selectMood(this,'Peace')">
+        <span class="mood-icon">🌿</span>
+        <div class="mood-label">Peace</div>
+        <div class="mood-desc">Nature & stillness</div>
+      </div>
+      <div class="mood-card" onclick="selectMood(this,'Culture')">
+        <span class="mood-icon">🏛️</span>
+        <div class="mood-label">Culture</div>
+        <div class="mood-desc">Heritage & art</div>
+      </div>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <!-- Budget -->
+    <p class="section-label">✦ Budget (per person)</p>
+    <div class="slider-wrap">
+      <div class="slider-row">
+        <div class="slider-val"><span>₹</span><span id="budgetVal">8,500</span></div>
+        <div style="font-size:12px;color:var(--text-muted)">for the trip</div>
+      </div>
+      <input type="range" id="budgetSlider" min="1000" max="20000" value="8500" step="500" oninput="updateBudget(this)">
+    </div>
+
+    <div class="form-divider"></div>
+
+    <!-- Duration -->
+    <p class="section-label">✦ Trip Duration</p>
+    <div class="chip-row" id="durationChips">
+      <div class="chip" onclick="selectChip(this,'dur')">1 Day</div>
+      <div class="chip selected" onclick="selectChip(this,'dur')">2 Days</div>
+      <div class="chip" onclick="selectChip(this,'dur')">3 Days</div>
+      <div class="chip" onclick="selectChip(this,'dur')">5 Days</div>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <!-- Style -->
+    <p class="section-label">✦ Travel Style</p>
+    <div class="chip-row" id="styleChips">
+      <div class="chip selected" onclick="selectChip(this,'style')">Solo 🧘</div>
+      <div class="chip" onclick="selectChip(this,'style')">Friends 🎉</div>
+      <div class="chip" onclick="selectChip(this,'style')">Couple 💑</div>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <div class="cta-wrap">
+      <button class="btn-primary pulse-ring" onclick="goLoading()" style="width:100%;font-size:16px;padding:18px;">
+        ✨ Surprise Me
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 2: LOADING ══════ -->
+<div class="screen" id="screen-loading">
+  <div class="loading-center">
+    <div class="compass-outer">
+      <div class="compass-ring">
+        <div class="compass-needle">
+          <div class="needle-n"></div>
+          <div class="needle-s"></div>
+        </div>
+      </div>
+    </div>
+    <div class="map-dots">
+      <div class="map-dot"></div>
+      <div class="map-dot"></div>
+      <div class="map-dot"></div>
+    </div>
+    <div class="loading-text serif" id="loadingText">Scanning hidden gems...</div>
+    <div class="loading-sub">India has secrets to share</div>
+    <div class="scan-line"></div>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 3: MYSTERY ══════ -->
+<div class="screen" id="screen-mystery">
+  <div class="mystery-wrap">
+    <div class="mystery-badge">🔮 Your Journey Awaits</div>
+    <h2 class="mystery-title serif">A <em>mystery</em><br>has been crafted</h2>
+    <p class="mystery-sub">Your destination is sealed. Clues will guide you. The full reveal unlocks in 24 hours — or right now for a sneak peek.</p>
+
+    <!-- Blurred destination -->
+    <div class="dest-blur-box">
+      <div class="dest-blur-text" id="blurredDest">Vagamon</div>
+      <div class="dest-blur-overlay">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-text">Locked until departure</div>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown-wrap glass-dark" style="padding:20px;border-radius:18px;margin-bottom:24px;">
+      <div class="countdown-label">Reveals in</div>
+      <div class="countdown-digits">
+        <div class="cd-unit">
+          <span class="cd-num" id="cdH">23</span>
+          <div class="cd-label">hrs</div>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <span class="cd-num" id="cdM">59</span>
+          <div class="cd-label">min</div>
+        </div>
+        <div class="cd-sep">:</div>
+        <div class="cd-unit">
+          <span class="cd-num" id="cdS">47</span>
+          <div class="cd-label">sec</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hints -->
+    <div class="hints-wrap" id="hintsWrap"></div>
+
+    <!-- Buttons -->
+    <div class="mystery-btns">
+      <button class="btn-primary pulse-ring" onclick="goReveal()" style="width:100%;padding:17px;">
+        🔓 Reveal Now
+      </button>
+      <button class="btn-ghost" onclick="rerollDestination()">
+        🎲 Reroll Destination
+      </button>
+      <button class="btn-ghost" onclick="goHome()">
+        ← Back to Preferences
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 4: FINAL REVEAL ══════ -->
+<div class="screen" id="screen-reveal">
+  <!-- Hero image -->
+  <div class="reveal-hero">
+    <div class="reveal-bg" id="revealBg"></div>
+    <div class="reveal-overlay"></div>
+    <div class="reveal-hero-content">
+      <div class="reveal-emoji" id="revealEmoji">🏔️ 🌿 ✨</div>
+      <div class="reveal-dest serif" id="revealDest">Vagamon</div>
+      <div class="reveal-state" id="revealState">Kerala, India</div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="reveal-body">
+    <div class="reveal-tagline serif" id="revealTagline">"Where the mist holds your secrets"</div>
+
+    <!-- Budget breakdown -->
+    <div class="info-card glass-dark">
+      <div class="card-header">
+        <span class="card-icon">💰</span>
+        <span class="card-title serif">Budget Breakdown</span>
+        <span class="card-badge" id="totalBudget">₹8,500</span>
+      </div>
+      <div id="budgetBreakdown"></div>
+    </div>
+
+    <!-- Activities -->
+    <div class="info-card glass-dark">
+      <div class="card-header">
+        <span class="card-icon">🗺️</span>
+        <span class="card-title serif">What You'll Do</span>
+      </div>
+      <div id="activitiesList"></div>
+    </div>
+
+    <!-- Food -->
+    <div class="info-card glass-dark">
+      <div class="card-header">
+        <span class="card-icon">🍽️</span>
+        <span class="card-title serif">Where You'll Eat</span>
+      </div>
+      <div class="food-chip-row" id="foodList"></div>
+    </div>
+
+    <!-- Best time -->
+    <div class="info-card glass-dark">
+      <div class="card-header">
+        <span class="card-icon">🌤️</span>
+        <span class="card-title serif">Travel Notes</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-muted);line-height:1.7;" id="travelNotes"></p>
+    </div>
+
+    <!-- Map preview -->
+    <div class="info-card glass-dark">
+      <div class="card-header">
+        <span class="card-icon">🗺️</span>
+        <span class="card-title serif">Location</span>
+      </div>
+      <div class="map-preview">
+        <div class="map-grid"></div>
+        <div class="map-pin-center">
+          <div class="map-pin-emoji">📍</div>
+          <div class="map-pin-name" id="mapPinName">VAGAMON</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="reveal-actions">
+      <button class="btn-primary" onclick="rerollDestination(); goHome();">🎲 Reroll</button>
+      <button class="btn-ghost" onclick="shareTrip()">📤 Share</button>
+    </div>
+
+    <!-- Share banner -->
+    <div class="share-banner" onclick="shareTrip()">
+      <div class="share-text">
+        Share your mystery trip ✨
+        <small>Let friends guess where you're going!</small>
+      </div>
+      <div class="share-icon">→</div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">Copied to clipboard! ✓</div>
+
+<script>
+/* ═══════════════════════════════════
+   DATA
+═══════════════════════════════════ */
+const destinations = {
+  Chill: [
+    {
+      name: "Varkala",
+      state: "Kerala, India",
+      emoji: "🌊 🏖️ ☀️",
+      tagline: "\"Where cliffs kiss the Arabian Sea\"",
+      bg: "linear-gradient(135deg, #1a4a6e 0%, #2d7d9a 40%, #e8a87c 100%)",
+      hints: [
+        { icon: "🌊", text: "<strong>Hint 1:</strong> The sea meets towering red laterite cliffs here." },
+        { icon: "🏖️", text: "<strong>Hint 2:</strong> This beach town is loved by backpackers & yogis alike." },
+        { icon: "🌴", text: "<strong>Hint 3:</strong> You'll find rooftop cafes overlooking emerald water." },
+      ],
+      budget: [
+        { label: "Stay (2 nights)", amt: "₹2,800", pct: 0.33 },
+        { label: "Food & Drinks", amt: "₹1,500", pct: 0.18 },
+        { label: "Activities", amt: "₹800", pct: 0.09 },
+        { label: "Transport", amt: "₹1,200", pct: 0.14 },
+        { label: "Misc & Shopping", amt: "₹600", pct: 0.07 },
+      ],
+      activities: [
+        { name: "Cliff Walk at Sunrise", desc: "Stroll the famous North Cliff as the sun paints the Arabian Sea gold." },
+        { name: "Papanasam Beach Swim", desc: "Take a holy dip at this sacred beach with dramatic natural backdrop." },
+        { name: "Ayurvedic Massage", desc: "Restore your body with a traditional Kerala oil massage session." },
+        { name: "Sunset Kayaking", desc: "Paddle through backwaters as flamingo skies unfold above you." },
+      ],
+      food: ["Clafouti Café ☕", "Sea Breeze Restaurant 🐟", "Abba Restaurant 🥘", "Rock n Roll Café 🍳"],
+      notes: "Best visited between October and March. The town is small — navigate on foot or rent a scooter. Avoid peak December crowd by going mid-January.",
+    }
+  ],
+  Adventure: [
+    {
+      name: "Hampi",
+      state: "Karnataka, India",
+      emoji: "🗿 🏔️ 🌅",
+      tagline: "\"Ruins that remember empires\"",
+      bg: "linear-gradient(135deg, #5c2a0a 0%, #b85c38 40%, #f0c070 100%)",
+      hints: [
+        { icon: "🗿", text: "<strong>Hint 1:</strong> Ancient boulders scatter across a surreal landscape." },
+        { icon: "🏯", text: "<strong>Hint 2:</strong> Once the capital of the world's richest empire." },
+        { icon: "🚵", text: "<strong>Hint 3:</strong> Cycle between temples, rivers, and boulder fields." },
+      ],
+      budget: [
+        { label: "Stay (2 nights)", amt: "₹1,800", pct: 0.21 },
+        { label: "Food & Drinks", amt: "₹1,200", pct: 0.14 },
+        { label: "Activities", amt: "₹1,500", pct: 0.18 },
+        { label: "Transport", amt: "₹1,000", pct: 0.12 },
+        { label: "Entry Fees", amt: "₹600", pct: 0.07 },
+      ],
+      activities: [
+        { name: "Virupaksha Temple at Dawn", desc: "Watch priests perform rituals as morning light filters through carved stone." },
+        { name: "Boulder Hopping at Hemakuta", desc: "Scramble across ancient Dravidian temples perched on volcanic rocks." },
+        { name: "Tungabhadra River Coracle", desc: "Ride circular reed boats across the sacred river as fishermen cast nets." },
+        { name: "Sunset at Matanga Hill", desc: "Climb 200 steps for a 360° panorama of ruins, boulders, and paddy fields." },
+      ],
+      food: ["Mango Tree Restaurant 🌳", "Laughing Buddha 😄", "Gopi Rooftop 🏠", "Ravi's Rose 🌹"],
+      notes: "October–February is ideal. Rent a bicycle (₹100/day) — Hampi is best explored slowly. The Hippie Island across the river is a bonus.",
+    },
+    {
+      name: "Tirthan Valley",
+      state: "Himachal Pradesh, India",
+      emoji: "🏔️ 🌲 🦋",
+      tagline: "\"The valley time forgot\"",
+      bg: "linear-gradient(135deg, #1a3a1a 0%, #2d6b3a 40%, #a8d5b5 100%)",
+      hints: [
+        { icon: "🏔️", text: "<strong>Hint 1:</strong> A pristine valley flanked by the Great Himalayan National Park." },
+        { icon: "🐟", text: "<strong>Hint 2:</strong> Famous for trout fishing in crystal rivers." },
+        { icon: "🌲", text: "<strong>Hint 3:</strong> No crowds. No noise. Just pine, snow, and stars." },
+      ],
+      budget: [
+        { label: "Stay (3 nights)", amt: "₹3,200", pct: 0.38 },
+        { label: "Food & Drinks", amt: "₹1,800", pct: 0.21 },
+        { label: "Trout Fishing Permit", amt: "₹500", pct: 0.06 },
+        { label: "Transport", amt: "₹2,000", pct: 0.24 },
+        { label: "Trek Guide", amt: "₹800", pct: 0.09 },
+      ],
+      activities: [
+        { name: "Trout Fishing in Tirthan River", desc: "Catch-and-release rainbow trout in one of India's purest rivers." },
+        { name: "Trek to Jalori Pass", desc: "A gentle 6km trek through oak forests to a sacred mountain pass." },
+        { name: "Homestay Village Walk", desc: "Share a meal with a Himachali family in their 200-year-old house." },
+        { name: "Night Sky Gazing", desc: "Zero light pollution means the Milky Way is visible with naked eye." },
+      ],
+      food: ["Raju Bharti's Kitchen 🏠", "Shoja Café ☕", "GNHP Canteen 🍲", "Local Dhaba Thali 🍛"],
+      notes: "April–June and September–November are best. Carry cash — ATMs are far. Roads can be rough; book a 4WD taxi from Bhuntar.",
+    }
+  ],
+  Peace: [
+    {
+      name: "Vagamon",
+      state: "Kerala, India",
+      emoji: "☁️ 🌿 🕊️",
+      tagline: "\"Where mist is the morning prayer\"",
+      bg: "linear-gradient(135deg, #0d2b1a 0%, #2d5a3a 40%, #7ab88a 100%)",
+      hints: [
+        { icon: "☁️", text: "<strong>Hint 1:</strong> Mist rolls through meadows every single morning here." },
+        { icon: "🌿", text: "<strong>Hint 2:</strong> Rolling tea estates and pine forests at 1,100m altitude." },
+        { icon: "🧘", text: "<strong>Hint 3:</strong> A plateau so quiet, you'll hear your own thoughts clearly." },
+      ],
+      budget: [
+        { label: "Stay (2 nights)", amt: "₹3,200", pct: 0.38 },
+        { label: "Food & Drinks", amt: "₹1,400", pct: 0.16 },
+        { label: "Tea Estate Tour", amt: "₹400", pct: 0.05 },
+        { label: "Transport", amt: "₹1,800", pct: 0.21 },
+        { label: "Activities", amt: "₹900", pct: 0.11 },
+      ],
+      activities: [
+        { name: "Sunrise at Vagamon Meadows", desc: "Watch golden light pierce through sea clouds as the world below disappears." },
+        { name: "Pine Forest Walk", desc: "Wander through the surreal Kurisumala pine forests in complete silence." },
+        { name: "Tea Estate Trail", desc: "Walk between green tea rows as workers hand-pick the morning harvest." },
+        { name: "Paragliding at Sunset", desc: "Soar above mist-filled valleys as the sun melts into the horizon." },
+      ],
+      food: ["Vagamon Lake Side 🏞️", "Mist Valley Resort Kitchen 🌫️", "Tea Estate Café ☕", "Kottayam Highway Dhaba 🍛"],
+      notes: "Avoid monsoon (June–August) — roads get difficult. October to May is magical. Carry warm layers — nights drop to 10°C.",
+    },
+    {
+      name: "Gokarna",
+      state: "Karnataka, India",
+      emoji: "🌊 🛕 🌅",
+      tagline: "\"Goa's soulful, spiritual sister\"",
+      bg: "linear-gradient(135deg, #1a2a4a 0%, #2a5a7a 50%, #e8a87c 100%)",
+      hints: [
+        { icon: "🛕", text: "<strong>Hint 1:</strong> A sacred temple town with hidden beaches." },
+        { icon: "🌊", text: "<strong>Hint 2:</strong> Trek between pristine beaches separated by rocky headlands." },
+        { icon: "🕯️", text: "<strong>Hint 3:</strong> Evenings smell of incense and ocean salt together." },
+      ],
+      budget: [
+        { label: "Stay (2 nights)", amt: "₹2,200", pct: 0.26 },
+        { label: "Food & Drinks", amt: "₹1,600", pct: 0.19 },
+        { label: "Activities", amt: "₹900", pct: 0.11 },
+        { label: "Transport", amt: "₹1,200", pct: 0.14 },
+        { label: "Temple Offerings", amt: "₹200", pct: 0.02 },
+      ],
+      activities: [
+        { name: "Om Beach Sunrise", desc: "Watch the sky turn from ink to amber at the natural Om-shaped beach." },
+        { name: "Beach Trek to Half Moon Bay", desc: "An invigorating cliffside hike to secluded beaches accessible only on foot." },
+        { name: "Mahabaleshwara Temple Visit", desc: "Explore one of India's most sacred Shiva shrines at the heart of town." },
+        { name: "Hammock & Stars", desc: "Rent a beachside shack hammock and count constellations with chai." },
+      ],
+      food: ["Namaste Café 🍵", "Pai Hotel 🍛", "Shree Shakti Café 🌮", "Om Beach Shacks 🐚"],
+      notes: "October–March is perfect. Kudle Beach is quieter than Om. Carry ₹500 notes — most shacks are cash-only. Respect the temple town customs.",
+    }
+  ],
+  Culture: [
+    {
+      name: "Yercaud",
+      state: "Tamil Nadu, India",
+      emoji: "🏔️ 🌸 🎨",
+      tagline: "\"The jewel of the south's highlands\"",
+      bg: "linear-gradient(135deg, #2a1a4a 0%, #5a3a7a 40%, #d4a8e8 100%)",
+      hints: [
+        { icon: "🌸", text: "<strong>Hint 1:</strong> A hill station smelling of coffee, pepper, and orange blossoms." },
+        { icon: "🏔️", text: "<strong>Hint 2:</strong> The Shevaroy Hills rise to greet you at 1,500m." },
+        { icon: "🎨", text: "<strong>Hint 3:</strong> Local tribal art and folk culture unlike anywhere else in India." },
+      ],
+      budget: [
+        { label: "Stay (2 nights)", amt: "₹2,600", pct: 0.31 },
+        { label: "Food & Drinks", amt: "₹1,300", pct: 0.15 },
+        { label: "Coffee Estate Tour", amt: "₹600", pct: 0.07 },
+        { label: "Transport", amt: "₹1,500", pct: 0.18 },
+        { label: "Tribal Craft Shopping", amt: "₹800", pct: 0.09 },
+      ],
+      activities: [
+        { name: "Coffee Plantation Walk", desc: "Walk through shaded rows of Arabica plants as the aroma envelops you." },
+        { name: "Pagoda Point Sunrise", desc: "Panoramic views of Salem plains from a dramatic hilltop at dawn." },
+        { name: "Shevaroyan Temple Trek", desc: "A 4km jungle walk to a sacred shrine atop the highest peak." },
+        { name: "Anna Park & Lake Boat", desc: "Paddle a boat on the serene Yercaud Lake surrounded by eucalyptus." },
+      ],
+      food: ["Hotel Tamil Nadu Rooftop 🍛", "Green Chilli Café 🌶️", "Coffee Day Estate Kiosk ☕", "Lalitha Mess 🥘"],
+      notes: "Less crowded than Ooty — perfect for culture seekers. March–June for summer bloom. The local Kurumba tribal market runs on Saturdays.",
+    },
+    {
+      name: "Coorg",
+      state: "Karnataka, India",
+      emoji: "☕ 🌧️ 🌿",
+      tagline: "\"Scotland of India, heart of coffee\"",
+      bg: "linear-gradient(135deg, #1a1a0a 0%, #3a4a1a 50%, #8ab870 100%)",
+      hints: [
+        { icon: "☕", text: "<strong>Hint 1:</strong> You'll wake up to the scent of freshly brewed estate coffee." },
+        { icon: "🌧️", text: "<strong>Hint 2:</strong> Mist, waterfalls, and a warrior culture unlike any other." },
+        { icon: "🐘", text: "<strong>Hint 3:</strong> Elephants roam the forests here as they have for centuries." },
+      ],
+      budget: [
+        { label: "Stay (2 nights)", amt: "₹3,800", pct: 0.45 },
+        { label: "Food & Drinks", amt: "₹1,600", pct: 0.19 },
+        { label: "Coffee Estate Tour", amt: "₹500", pct: 0.06 },
+        { label: "Dubare Elephant Camp", amt: "₹800", pct: 0.09 },
+        { label: "Transport & Fuel", amt: "₹1,500", pct: 0.18 },
+      ],
+      activities: [
+        { name: "Dubare Elephant Camp", desc: "Bathe elephants at dawn in the Cauvery river — a once-in-a-life moment." },
+        { name: "Abbey Falls Walk", desc: "A jungle trail to a 70-foot waterfall framed by coffee and pepper vines." },
+        { name: "Coorg Cuisine Cooking Class", desc: "Learn to cook Pandi curry and Akki Rotti in a homestay kitchen." },
+        { name: "Raja's Seat Sunset", desc: "The legendary viewpoint where Kodava kings once watched sunsets." },
+      ],
+      food: ["Rainforest Restaurant 🌧️", "Raintree 🌳", "Capitol Village 🏡", "Coorg Cuisine Homestay 🍛"],
+      notes: "Stay at a coffee estate homestay for the full Coorg experience. Avoid monsoon season (June–September) unless you enjoy misty seclusion.",
+    }
+  ]
+};
+
+/* ═══════════════════════════════════
+   STATE
+═══════════════════════════════════ */
+let selectedMood = 'Peace';
+let selectedDur  = '2 Days';
+let selectedStyle = 'Solo';
+let budget = 8500;
+let currentDest = null;
+let cdInterval = null;
+let cdSeconds = 23 * 3600 + 59 * 60 + 47;
+
+/* ═══════════════════════════════════
+   PARTICLES
+═══════════════════════════════════ */
+(function createParticles() {
+  const layer = document.getElementById('particleLayer');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 3 + 1;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${8+Math.random()*14}s;
+      animation-delay:${Math.random()*10}s;
+      --drift:${(Math.random()-0.5)*100}px;
+    `;
+    layer.appendChild(p);
+  }
+})();
+
+/* Clouds */
+(function createClouds() {
+  const layer = document.getElementById('cloudLayer');
+  const sizes = [[300,80],[500,60],[200,50],[400,70],[350,90]];
+  sizes.forEach(([w,h],i) => {
+    const c = document.createElement('div');
+    c.className = 'cloud';
+    c.style.cssText = `
+      width:${w}px;height:${h}px;
+      top:${Math.random()*60}%;
+      animation-duration:${40+i*12}s;
+      animation-delay:${-i*8}s;
+    `;
+    layer.appendChild(c);
+  });
+})();
+
+/* ═══════════════════════════════════
+   BUDGET SLIDER
+═══════════════════════════════════ */
+function updateBudget(el) {
+  budget = parseInt(el.value);
+  document.getElementById('budgetVal').textContent = budget.toLocaleString('en-IN');
+  const pct = ((budget - 1000) / 19000) * 100;
+  el.style.setProperty('--pct', pct + '%');
+}
+// Init slider fill
+(function() {
+  const sl = document.getElementById('budgetSlider');
+  sl.style.setProperty('--pct', '39%');
+})();
+
+/* ═══════════════════════════════════
+   SELECTIONS
+═══════════════════════════════════ */
+function selectMood(el, mood) {
+  document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedMood = mood;
+}
+
+function selectChip(el, group) {
+  const parent = el.closest('.chip-row');
+  parent.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  if (group === 'dur') selectedDur = el.textContent;
+  else selectedStyle = el.textContent;
+}
+
+/* ═══════════════════════════════════
+   SCREEN TRANSITIONS
+═══════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    if (s.id === id) {
+      s.classList.add('active');
+      s.classList.remove('exit');
+    } else if (s.classList.contains('active')) {
+      s.classList.add('exit');
+      setTimeout(() => s.classList.remove('active','exit'), 700);
+    }
+  });
+  window.scrollTo(0,0);
+}
+
+/* ═══════════════════════════════════
+   PICK DESTINATION
+═══════════════════════════════════ */
+function pickDestination() {
+  const pool = destinations[selectedMood] || destinations['Peace'];
+  currentDest = pool[Math.floor(Math.random() * pool.length)];
+}
+
+/* ═══════════════════════════════════
+   FLOW
+═══════════════════════════════════ */
+function goHome() {
+  showScreen('screen-home');
+  if (cdInterval) clearInterval(cdInterval);
+}
+
+function goLoading() {
+  showScreen('screen-loading');
+  pickDestination();
+
+  const msgs = [
+    "Scanning hidden gems...",
+    "Matching your vibe...",
+    "Reading the winds...",
+    "Crafting your journey...",
+    "Almost there..."
+  ];
+  let i = 0;
+  const el = document.getElementById('loadingText');
+  const ticker = setInterval(() => {
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = msgs[++i % msgs.length];
+      el.style.opacity = '1';
+    }, 300);
+  }, 1200);
+
+  setTimeout(() => {
+    clearInterval(ticker);
+    goMystery();
+  }, 4200);
+}
+
+function goMystery() {
+  // Populate mystery screen
+  document.getElementById('blurredDest').textContent = currentDest.name;
+
+  // Render hints
+  const hw = document.getElementById('hintsWrap');
+  hw.innerHTML = '';
+  currentDest.hints.forEach((h, i) => {
+    const div = document.createElement('div');
+    div.className = 'hint-card glass';
+    div.style.animationDelay = (i * 0.15 + 0.2) + 's';
+    div.innerHTML = `<span class="hint-icon">${h.icon}</span><div class="hint-text">${h.text}</div>`;
+    hw.appendChild(div);
+  });
+
+  // Start countdown
+  if (cdInterval) clearInterval(cdInterval);
+  cdSeconds = 23 * 3600 + 59 * 60 + 47;
+  updateCountdown();
+  cdInterval = setInterval(() => {
+    cdSeconds--;
+    updateCountdown();
+  }, 1000);
+
+  showScreen('screen-mystery');
+}
+
+function updateCountdown() {
+  const h = Math.floor(cdSeconds / 3600);
+  const m = Math.floor((cdSeconds % 3600) / 60);
+  const s = cdSeconds % 60;
+  document.getElementById('cdH').textContent = String(h).padStart(2,'0');
+  document.getElementById('cdM').textContent = String(m).padStart(2,'0');
+  document.getElementById('cdS').textContent = String(s).padStart(2,'0');
+}
+
+function goReveal() {
+  if (cdInterval) clearInterval(cdInterval);
+  populateReveal();
+  showScreen('screen-reveal');
+}
+
+function populateReveal() {
+  const d = currentDest;
+
+  document.getElementById('revealDest').textContent    = d.name;
+  document.getElementById('revealState').textContent   = d.state;
+  document.getElementById('revealEmoji').textContent   = d.emoji;
+  document.getElementById('revealTagline').textContent = d.tagline;
+  document.getElementById('totalBudget').textContent   = '₹' + budget.toLocaleString('en-IN');
+  document.getElementById('mapPinName').textContent    = d.name.toUpperCase();
+  document.getElementById('revealBg').style.background = d.bg;
+
+  // Budget
+  const bb = document.getElementById('budgetBreakdown');
+  bb.innerHTML = '';
+  d.budget.forEach(row => {
+    bb.innerHTML += `
+      <div class="budget-row">
+        <span class="budget-label">${row.label}</span>
+        <div class="budget-bar-wrap"><div class="budget-bar" style="width:${row.pct*100}%;animation-delay:${Math.random()*0.5}s"></div></div>
+        <span class="budget-amt">${row.amt}</span>
+      </div>`;
+  });
+
+  // Activities
+  const al = document.getElementById('activitiesList');
+  al.innerHTML = '';
+  d.activities.forEach(a => {
+    al.innerHTML += `
+      <div class="activity-item">
+        <div class="activity-dot"></div>
+        <div>
+          <div class="activity-name">${a.name}</div>
+          <div class="activity-desc">${a.desc}</div>
+        </div>
+      </div>`;
+  });
+
+  // Food
+  const fl = document.getElementById('foodList');
+  fl.innerHTML = '';
+  d.food.forEach(f => {
+    fl.innerHTML += `<div class="food-chip">${f}</div>`;
+  });
+
+  // Notes
+  document.getElementById('travelNotes').textContent = d.notes;
+}
+
+function rerollDestination() {
+  pickDestination();
+  goMystery();
+}
+
+function shareTrip() {
+  const text = `🇮🇳 I'm going on a mystery trip with Serendipity !\n📍 Destination: ???\n🌟 Revealing in 24 hours...\n#SerendipityIndia #MysteryTravel`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard! Share anywhere ✨'));
+  } else {
+    showToast('Share: #SerendipityIndia 🌟');
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
