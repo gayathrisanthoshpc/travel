@@ -3,16 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#1C1410">
+<meta name="description" content="Mystery travel across hidden India. Tell us your mood — we craft the journey.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Yatr">
 <title>Yatr — Mystery Travel India</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
+<!-- PWA Manifest (inline) -->
+<link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22Yatr%20%E2%80%94%20Mystery%20Travel%20India%22%2C%22short_name%22%3A%22Yatr%22%2C%22description%22%3A%22Mystery%20travel%20across%20hidden%20India%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231C1410%22%2C%22theme_color%22%3A%22%231C1410%22%2C%22orientation%22%3A%22portrait%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%3D%2527http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%2527%2520viewBox%3D%270%200%2096%2096%2527%253E%253Crect%2520width%3D%252796%2527%2520height%3D%252796%2527%2520rx%3D%252722%2527%2520fill%3D%2527%2523C2714F%2527%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%2296x96%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
+/* ── FOCUS VISIBLE (accessibility) ── */
+:focus-visible {
+  outline: 2px solid var(--clay);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 :root {
-  /* BASE PALETTE — all defined */
   --clay:        #C2714F;
   --sand:        #E8C99A;
   --ember:       #A84A2A;
@@ -23,33 +37,27 @@
   --ink:         #1C1410;
   --paper:       #2E1C14;
 
-  /* SURFACES */
   --s0:          #1C1410;
   --s1:          #251C16;
   --s2:          #2E2318;
   --s3:          #382A20;
 
-  /* TEXT */
   --t1:          #F2EBE0;
   --t2:          rgba(242,235,224,0.65);
   --t3:          rgba(242,235,224,0.35);
 
-  /* BORDERS */
   --b1:          rgba(255,255,255,0.07);
   --b2:          rgba(255,255,255,0.12);
   --b3:          rgba(194,113,79,0.35);
 
-  /* BORDER RADIUS */
   --rf:          16px;
   --radius-sm:   8px;
   --radius-md:   16px;
   --radius-lg:   24px;
   --radius-xl:   32px;
 
-  /* NAV HEIGHT */
   --nav-h:       68px;
 
-  /* MOOD GLOWS */
   --glow-chill:      rgba(91,192,222,0.5);
   --glow-adventure:  rgba(194,113,79,0.6);
   --glow-peace:      rgba(74,122,90,0.55);
@@ -57,23 +65,19 @@
   --glow-romance:    rgba(183,110,121,0.55);
   --glow-spiritual:  rgba(123,94,167,0.55);
 
-  /* GRADIENTS */
   --grad-hero:    radial-gradient(ellipse at top, #2C1810 0%, #1C1410 50%, #0D0A08 100%);
   --grad-reveal:  radial-gradient(ellipse at top, #1A1535 0%, #0D0B1A 60%, #080610 100%);
   --grad-button:  linear-gradient(135deg, #C2714F 0%, #A84A2A 100%);
 
-  /* TYPOGRAPHY */
   --font-display: 'Cormorant Garamond', serif;
   --font-body:    'DM Sans', sans-serif;
 }
 
-/* REVEAL PAGE THEME SWITCH */
 body.reveal-page {
   background-image: var(--grad-reveal) !important;
   background-color: #0D0B1A !important;
 }
 
-/* ── TYPOGRAPHY ── */
 h1,h2,h3,.serif { font-family: var(--font-display) !important; }
 body, p, button, label, input, .chip { font-family: var(--font-body); }
 
@@ -201,6 +205,17 @@ body::before {
 }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+/* ── BUDGET BADGE ── */
+.budget-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+  background: rgba(74,122,90,.15); color: #7ABF8A;
+  border: 1px solid rgba(74,122,90,.25); margin-top: 8px;
+}
+.budget-badge.tight { background: rgba(168,74,42,.15); color: var(--sand); border-color: rgba(168,74,42,.25); }
+.budget-badge.comfortable { background: rgba(74,122,90,.15); color: #7ABF8A; border-color: rgba(74,122,90,.25); }
+.budget-badge.luxury { background: rgba(196,160,112,.15); color: var(--sand); border-color: rgba(196,160,112,.25); }
+
 /* ══════════════════════════════
    SPLASH SCREEN
 ══════════════════════════════ */
@@ -267,6 +282,12 @@ body::before {
 .home-h em { color: var(--clay); font-style: italic; }
 .home-sub { font-size: 13px; color: var(--t2); margin-top: 8px; line-height: 1.6; }
 
+/* Budget preview badge on home */
+#budgetFitBadge {
+  margin-top: 10px; font-size: 11px; color: var(--t3);
+  min-height: 20px; transition: color .2s;
+}
+
 /* Mood horizontal scroll */
 .mood-scroll-wrap {
   overflow-x: auto; overflow-y: hidden;
@@ -329,6 +350,20 @@ input[type=range]::-webkit-slider-thumb {
 input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.3); }
 .slider-ticks { display: flex; justify-content: space-between; margin-top: 8px; }
 .tick { font-size: 10px; color: var(--t3); }
+
+/* Destination availability preview */
+.avail-row {
+  display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px;
+}
+.avail-chip {
+  padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+  background: rgba(74,122,90,.1); color: #7ABF8A;
+  border: 1px solid rgba(74,122,90,.2);
+}
+.avail-chip.none {
+  background: rgba(168,74,42,.1); color: var(--sand);
+  border-color: rgba(168,74,42,.2);
+}
 
 /* Chip groups */
 .chip-group { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -412,6 +447,15 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
   margin-left: 1px; animation: aiCursor .8s step-end infinite;
 }
 @keyframes aiCursor { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* AI error state */
+.ai-error {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 14px; border-radius: var(--radius-md);
+  background: rgba(168,74,42,.08); border: 1px solid rgba(168,74,42,.2);
+  font-size: 12px; color: var(--sand); margin-top: 8px;
+}
+.ai-error-ico { font-size: 16px; flex-shrink: 0; }
 
 /* ══════════════════════════════
    MYSTERY
@@ -522,8 +566,8 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
 .hero-grad {
   position: absolute; inset: 0;
   background-size: cover; background-position: center;
-  background-image: url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80') !important;
   animation: heroZoom 12s ease-out both;
+  transition: background-image .6s ease;
 }
 @keyframes heroZoom { 0% { transform: scale(1.12); } 100% { transform: scale(1); } }
 .hero-dim { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(28,20,16,.1) 0%, rgba(28,20,16,.88) 100%); }
@@ -695,6 +739,26 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
 }
 @keyframes pathFade { 0% { opacity: .3; } 100% { opacity: .08; } }
 
+/* ── Share canvas modal ── */
+#shareModal {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+#shareModal.open { opacity: 1; pointer-events: all; }
+.share-modal-inner {
+  background: var(--s1); border: 1px solid var(--b2);
+  border-radius: var(--radius-lg); padding: 24px; max-width: 340px; width: 90%;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+}
+#shareCanvas {
+  border-radius: var(--radius-md); max-width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+}
+.share-modal-btns { display: flex; gap: 10px; width: 100%; }
+.share-modal-btns .btn { flex: 1; font-size: 13px; padding: 12px; }
+
 /* ══════════════════════════════
    RESPONSIVE — LAPTOP FLOAT
 ══════════════════════════════ */
@@ -728,14 +792,23 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
   }
   .compass-watermark { opacity: 0.1 !important; }
 }
+
+/* Skip link for screen readers */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
 </style>
 </head>
 <body>
 
+<a href="#p-home" class="sr-only">Skip to main content</a>
+
 <!-- ═══ PANE: SPLASH ═══ -->
-<div class="pane full active" id="p-splash">
+<div class="pane full active" id="p-splash" role="main" aria-label="Yatr welcome screen">
   <div class="splash-bg">
-    <svg width="100%" height="100%" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <svg width="100%" height="100%" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
         <radialGradient id="g1" cx="30%" cy="30%"><stop offset="0%" stop-color="#3A1A0A" stop-opacity=".9"/><stop offset="100%" stop-color="#1C1410" stop-opacity="0"/></radialGradient>
         <radialGradient id="g2" cx="70%" cy="70%"><stop offset="0%" stop-color="#2A1A08" stop-opacity=".7"/><stop offset="100%" stop-color="#1C1410" stop-opacity="0"/></radialGradient>
@@ -767,7 +840,7 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
 
   <div class="splash-content">
     <div class="splash-logo">
-      <div class="logo-emblem">
+      <div class="logo-emblem" aria-hidden="true">
         <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
           <circle cx="19" cy="19" r="17" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
           <circle cx="19" cy="19" r="12" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="3 3"/>
@@ -780,35 +853,35 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
           <text x="2" y="20" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="3" font-family="sans-serif">W</text>
         </svg>
       </div>
-      <div class="logo-name serif">Ya<span>tr</span></div>
+      <div class="logo-name serif" aria-label="Yatr">Ya<span>tr</span></div>
       <div class="logo-tagline">Mystery Travel · India</div>
     </div>
 
-    <div class="splash-cards">
-      <div class="splash-card" style="animation-delay:.15s">
-        <span class="sc-ico">🎲</span>
+    <div class="splash-cards" role="list">
+      <div class="splash-card" style="animation-delay:.15s" role="listitem">
+        <span class="sc-ico" aria-hidden="true">🎲</span>
         <div><div class="sc-title">No destination searches</div><div class="sc-sub">Tell us your mood. We do the rest.</div></div>
       </div>
-      <div class="splash-card" style="animation-delay:.28s">
-        <span class="sc-ico">🤖</span>
+      <div class="splash-card" style="animation-delay:.28s" role="listitem">
+        <span class="sc-ico" aria-hidden="true">🤖</span>
         <div><div class="sc-title">AI-crafted itineraries</div><div class="sc-sub">Every trip is uniquely generated for you.</div></div>
       </div>
-      <div class="splash-card" style="animation-delay:.41s">
-        <span class="sc-ico">📍</span>
+      <div class="splash-card" style="animation-delay:.41s" role="listitem">
+        <span class="sc-ico" aria-hidden="true">📍</span>
         <div><div class="sc-title">Hidden gems only</div><div class="sc-sub">Underrated India, not the tourist trail.</div></div>
       </div>
     </div>
-    <button class="btn btn-primary" onclick="startApp()" style="font-size:15px;padding:16px">
+    <button class="btn btn-primary" onclick="startApp()" style="font-size:15px;padding:16px" aria-label="Start your mystery journey">
       Start My Journey &nbsp;→
     </button>
   </div>
 </div>
 
 <!-- ═══ PANE: DISCOVER ═══ -->
-<div class="pane" id="p-home">
+<div class="pane" id="p-home" role="main" aria-label="Discover your journey">
 
   <div class="home-top">
-    <svg class="compass-watermark" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg class="compass-watermark" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <circle cx="90" cy="90" r="85" stroke="white" stroke-width="1.5" stroke-dasharray="4 4"/>
       <circle cx="90" cy="90" r="60" stroke="white" stroke-width="1"/>
       <line x1="90" y1="5" x2="90" y2="175" stroke="white" stroke-width="1" stroke-dasharray="3 3"/>
@@ -817,22 +890,23 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
       <polygon points="90,100 94,90 90,165 86,90" fill="rgba(255,255,255,0.25)"/>
     </svg>
 
-    <div class="greeting">✈ Good to see you</div>
+    <div class="greeting" aria-hidden="true">✈ Good to see you</div>
     <h1 class="home-h serif">Where does your <em>soul</em><br>want to wander?</h1>
     <p class="home-sub">Pick your mood — we'll craft a mystery journey through hidden India.</p>
+    <div id="budgetFitBadge" aria-live="polite"></div>
   </div>
 
   <div style="padding:0 20px 0;margin-bottom:20px">
-    <div class="sec-lbl" style="margin:18px 0 14px 0">✦ Your Mood</div>
+    <div class="sec-lbl" style="margin:18px 0 14px 0" id="mood-label">✦ Your Mood</div>
   </div>
   <div class="mood-scroll-wrap">
-    <div class="mood-row" id="moodRow">
-      <div class="mood-pill on" style="--glow:var(--glow-chill);" onclick="pickMood(this,'Chill')"><span class="mood-pill-ico">🌊</span><span class="mood-pill-name">Chill</span></div>
-      <div class="mood-pill" style="--glow:var(--glow-adventure);" onclick="pickMood(this,'Adventure')"><span class="mood-pill-ico">🏔️</span><span class="mood-pill-name">Adventure</span></div>
-      <div class="mood-pill" style="--glow:var(--glow-peace);" onclick="pickMood(this,'Peace')"><span class="mood-pill-ico">🌿</span><span class="mood-pill-name">Peace</span></div>
-      <div class="mood-pill" style="--glow:var(--glow-culture);" onclick="pickMood(this,'Culture')"><span class="mood-pill-ico">🏛️</span><span class="mood-pill-name">Culture</span></div>
-      <div class="mood-pill" style="--glow:var(--glow-romance);" onclick="pickMood(this,'Romance')"><span class="mood-pill-ico">🌹</span><span class="mood-pill-name">Romance</span></div>
-      <div class="mood-pill" style="--glow:var(--glow-spiritual);" onclick="pickMood(this,'Spiritual')"><span class="mood-pill-ico">🕉️</span><span class="mood-pill-name">Spiritual</span></div>
+    <div class="mood-row" id="moodRow" role="group" aria-labelledby="mood-label">
+      <div class="mood-pill on" style="--glow:var(--glow-chill);" onclick="pickMood(this,'Chill')" onkeydown="keyMood(event,this,'Chill')" role="radio" aria-checked="true" tabindex="0" aria-label="Chill mood"><span class="mood-pill-ico" aria-hidden="true">🌊</span><span class="mood-pill-name">Chill</span></div>
+      <div class="mood-pill" style="--glow:var(--glow-adventure);" onclick="pickMood(this,'Adventure')" onkeydown="keyMood(event,this,'Adventure')" role="radio" aria-checked="false" tabindex="0" aria-label="Adventure mood"><span class="mood-pill-ico" aria-hidden="true">🏔️</span><span class="mood-pill-name">Adventure</span></div>
+      <div class="mood-pill" style="--glow:var(--glow-peace);" onclick="pickMood(this,'Peace')" onkeydown="keyMood(event,this,'Peace')" role="radio" aria-checked="false" tabindex="0" aria-label="Peace mood"><span class="mood-pill-ico" aria-hidden="true">🌿</span><span class="mood-pill-name">Peace</span></div>
+      <div class="mood-pill" style="--glow:var(--glow-culture);" onclick="pickMood(this,'Culture')" onkeydown="keyMood(event,this,'Culture')" role="radio" aria-checked="false" tabindex="0" aria-label="Culture mood"><span class="mood-pill-ico" aria-hidden="true">🏛️</span><span class="mood-pill-name">Culture</span></div>
+      <div class="mood-pill" style="--glow:var(--glow-romance);" onclick="pickMood(this,'Romance')" onkeydown="keyMood(event,this,'Romance')" role="radio" aria-checked="false" tabindex="0" aria-label="Romance mood"><span class="mood-pill-ico" aria-hidden="true">🌹</span><span class="mood-pill-name">Romance</span></div>
+      <div class="mood-pill" style="--glow:var(--glow-spiritual);" onclick="pickMood(this,'Spiritual')" onkeydown="keyMood(event,this,'Spiritual')" role="radio" aria-checked="false" tabindex="0" aria-label="Spiritual mood"><span class="mood-pill-ico" aria-hidden="true">🕉️</span><span class="mood-pill-name">Spiritual</span></div>
     </div>
   </div>
 
@@ -841,55 +915,58 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
     <div class="form-block">
       <div class="sec-lbl">✦ Budget Per Person</div>
       <div class="budget-display">
-        <div class="budget-num serif"><small>₹</small><span id="budgetNum">8,500</span></div>
+        <div class="budget-num serif" aria-live="polite"><small>₹</small><span id="budgetNum">8,500</span></div>
         <div class="budget-label">for the trip</div>
       </div>
-      <input type="range" id="bSlider" min="1000" max="25000" value="8500" step="500" oninput="onBudget(this)">
-      <div class="slider-ticks"><span class="tick">₹1k</span><span class="tick">₹5k</span><span class="tick">₹12k</span><span class="tick">₹25k</span></div>
+      <input type="range" id="bSlider" min="1000" max="25000" value="8500" step="500"
+        oninput="onBudget(this)" aria-label="Budget per person in rupees" aria-valuemin="1000" aria-valuemax="25000" aria-valuenow="8500">
+      <div class="slider-ticks" aria-hidden="true"><span class="tick">₹1k</span><span class="tick">₹5k</span><span class="tick">₹12k</span><span class="tick">₹25k</span></div>
+      <!-- Live budget match preview -->
+      <div class="avail-row" id="availRow" aria-live="polite" aria-label="Available destinations for your budget and mood"></div>
     </div>
 
     <!-- Duration -->
     <div class="form-block">
-      <div class="sec-lbl">✦ How Long</div>
-      <div class="chip-group" id="durGroup">
-        <div class="chip" onclick="pickChip(this,'dur')">Weekend</div>
-        <div class="chip on" onclick="pickChip(this,'dur')">3 Days</div>
-        <div class="chip" onclick="pickChip(this,'dur')">5 Days</div>
-        <div class="chip" onclick="pickChip(this,'dur')">1 Week</div>
+      <div class="sec-lbl" id="dur-label">✦ How Long</div>
+      <div class="chip-group" id="durGroup" role="group" aria-labelledby="dur-label">
+        <div class="chip" onclick="pickChip(this,'dur')" onkeydown="keyChip(event,this,'dur')" role="radio" aria-checked="false" tabindex="0">Weekend</div>
+        <div class="chip on" onclick="pickChip(this,'dur')" onkeydown="keyChip(event,this,'dur')" role="radio" aria-checked="true" tabindex="0">3 Days</div>
+        <div class="chip" onclick="pickChip(this,'dur')" onkeydown="keyChip(event,this,'dur')" role="radio" aria-checked="false" tabindex="0">5 Days</div>
+        <div class="chip" onclick="pickChip(this,'dur')" onkeydown="keyChip(event,this,'dur')" role="radio" aria-checked="false" tabindex="0">1 Week</div>
       </div>
     </div>
 
     <!-- Style -->
     <div class="form-block">
-      <div class="sec-lbl">✦ Travelling As</div>
-      <div class="chip-group" id="styleGroup">
-        <div class="chip on" onclick="pickChip(this,'style')">Solo 🧘</div>
-        <div class="chip" onclick="pickChip(this,'style')">Friends 🎉</div>
-        <div class="chip" onclick="pickChip(this,'style')">Couple 💑</div>
-        <div class="chip" onclick="pickChip(this,'style')">Family 👨‍👩‍👧</div>
+      <div class="sec-lbl" id="style-label">✦ Travelling As</div>
+      <div class="chip-group" id="styleGroup" role="group" aria-labelledby="style-label">
+        <div class="chip on" onclick="pickChip(this,'style')" onkeydown="keyChip(event,this,'style')" role="radio" aria-checked="true" tabindex="0">Solo 🧘</div>
+        <div class="chip" onclick="pickChip(this,'style')" onkeydown="keyChip(event,this,'style')" role="radio" aria-checked="false" tabindex="0">Friends 🎉</div>
+        <div class="chip" onclick="pickChip(this,'style')" onkeydown="keyChip(event,this,'style')" role="radio" aria-checked="false" tabindex="0">Couple 💑</div>
+        <div class="chip" onclick="pickChip(this,'style')" onkeydown="keyChip(event,this,'style')" role="radio" aria-checked="false" tabindex="0">Family 👨‍👩‍👧</div>
       </div>
     </div>
 
     <!-- Season -->
     <div class="form-block">
-      <div class="sec-lbl">✦ Travel Season</div>
-      <div class="chip-group" id="seasonGroup">
-        <div class="chip on" onclick="pickChip(this,'season')">Oct – Feb ❄️</div>
-        <div class="chip" onclick="pickChip(this,'season')">Mar – May 🌸</div>
-        <div class="chip" onclick="pickChip(this,'season')">Jun – Sep 🌧️</div>
+      <div class="sec-lbl" id="season-label">✦ Travel Season</div>
+      <div class="chip-group" id="seasonGroup" role="group" aria-labelledby="season-label">
+        <div class="chip on" onclick="pickChip(this,'season')" onkeydown="keyChip(event,this,'season')" role="radio" aria-checked="true" tabindex="0">Oct – Feb ❄️</div>
+        <div class="chip" onclick="pickChip(this,'season')" onkeydown="keyChip(event,this,'season')" role="radio" aria-checked="false" tabindex="0">Mar – May 🌸</div>
+        <div class="chip" onclick="pickChip(this,'season')" onkeydown="keyChip(event,this,'season')" role="radio" aria-checked="false" tabindex="0">Jun – Sep 🌧️</div>
       </div>
     </div>
   </div>
 
   <div class="cta-wrap">
-    <div class="travel-strip">
+    <div class="travel-strip" aria-hidden="true">
       <span class="ts-ico">✈️</span>
       <span class="ts-ico">🏔️</span>
       <span class="ts-ico">🗺️</span>
       <span class="ts-ico">🚂</span>
       <span class="ts-ico">⛺</span>
     </div>
-    <button class="btn btn-primary" onclick="goLoad()" style="font-size:15px;padding:17px">
+    <button class="btn btn-primary" onclick="goLoad()" style="font-size:15px;padding:17px" id="generateBtn">
       ✨ Surprise Me — Generate Trip
     </button>
   </div>
@@ -897,9 +974,9 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
 </div>
 
 <!-- ═══ PANE: LOADING ═══ -->
-<div class="pane full" id="p-loading">
+<div class="pane full" id="p-loading" role="status" aria-label="Generating your mystery trip" aria-live="polite">
   <div class="load-scene">
-    <div class="route-anim">
+    <div class="route-anim" aria-hidden="true">
       <div class="particle-dust"></div>
       <div class="compass-spin">🧭</div>
     </div>
@@ -907,73 +984,73 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
     <div class="load-phase serif" id="lPhase">The oracle is searching...</div>
     <div class="load-sub" id="lSub">Searching across India</div>
 
-    <div class="road-bar">
+    <div class="road-bar" aria-hidden="true">
       <div class="road-fill" id="roadFill"></div>
     </div>
 
-    <div class="ai-box" id="aiBox">
-      Connecting to AI travel engine...<span class="ai-cursor"></span>
+    <div class="ai-box" id="aiBox" role="log" aria-label="AI travel notes being generated">
+      Connecting to AI travel engine...<span class="ai-cursor" aria-hidden="true"></span>
     </div>
   </div>
 </div>
 
 <!-- ═══ PANE: MYSTERY ═══ -->
-<div class="pane" id="p-mystery">
+<div class="pane" id="p-mystery" role="main" aria-label="Your mystery destination">
   <div class="mystery-inner">
 
-    <div class="status-tag"><span class="status-dot"></span>Journey Crafted</div>
+    <div class="status-tag" aria-hidden="true"><span class="status-dot"></span>Journey Crafted</div>
 
     <h2 class="mystery-h serif">Your <em>secret</em><br>destination awaits</h2>
     <p class="mystery-p">We've woven a journey just for you. Follow the clues below — or unlock the full reveal right now.</p>
 
     <!-- Sealed card -->
-    <div class="seal-card">
+    <div class="seal-card" aria-label="Sealed destination card">
       <div class="seal-top">
-        <div class="stamp-ring sr1"></div>
-        <div class="stamp-ring sr2"></div>
-        <div class="seal-dest" id="sealDest">Vagamon</div>
-        <div class="seal-lock">
+        <div class="stamp-ring sr1" aria-hidden="true"></div>
+        <div class="stamp-ring sr2" aria-hidden="true"></div>
+        <div class="seal-dest" id="sealDest" aria-hidden="true">Vagamon</div>
+        <div class="seal-lock" aria-hidden="true">
           <div class="lock-icon">🔒</div>
           <div class="lock-label">SEALED · UNLOCKS IN 24H</div>
         </div>
       </div>
       <div class="seal-bottom">
-        <div class="seal-meta"><span class="seal-meta-ico">🌏</span> India — Hidden Gem</div>
-        <div class="seal-meta"><span class="seal-meta-ico">🗓️</span> <span id="sealDur">3 Days</span></div>
+        <div class="seal-meta"><span class="seal-meta-ico" aria-hidden="true">🌏</span> India — Hidden Gem</div>
+        <div class="seal-meta"><span class="seal-meta-ico" aria-hidden="true">🗓️</span> <span id="sealDur">3 Days</span></div>
       </div>
     </div>
 
     <!-- Countdown ticket -->
-    <div class="ticket">
-      <div class="ticket-head">✈ Departure countdown</div>
+    <div class="ticket" aria-label="Departure countdown timer">
+      <div class="ticket-head" aria-hidden="true">✈ Departure countdown</div>
       <div class="ticket-body">
-        <div class="countdown-row">
-          <div class="cd-block"><span class="cd-num serif" id="cdH">23</span><div class="cd-lbl">Hours</div></div>
-          <span class="cd-sep serif">:</span>
-          <div class="cd-block"><span class="cd-num serif" id="cdM">59</span><div class="cd-lbl">Min</div></div>
-          <span class="cd-sep serif">:</span>
-          <div class="cd-block"><span class="cd-num serif" id="cdS">47</span><div class="cd-lbl">Sec</div></div>
+        <div class="countdown-row" aria-live="off">
+          <div class="cd-block"><span class="cd-num serif" id="cdH">23</span><div class="cd-lbl" aria-hidden="true">Hours</div></div>
+          <span class="cd-sep serif" aria-hidden="true">:</span>
+          <div class="cd-block"><span class="cd-num serif" id="cdM">59</span><div class="cd-lbl" aria-hidden="true">Min</div></div>
+          <span class="cd-sep serif" aria-hidden="true">:</span>
+          <div class="cd-block"><span class="cd-num serif" id="cdS">47</span><div class="cd-lbl" aria-hidden="true">Sec</div></div>
         </div>
       </div>
     </div>
 
     <!-- Hints -->
-    <div class="hints-wrap" id="hintsWrap"></div>
+    <div class="hints-wrap" id="hintsWrap" aria-label="Destination clues" role="list"></div>
 
     <!-- Actions -->
     <div class="mystery-btns">
-      <button class="btn btn-primary" onclick="goReveal()" style="font-size:14px;padding:16px">🔓 Reveal My Destination</button>
-      <button class="btn btn-outline" onclick="reroll()" style="padding:14px;font-size:13px">🎲 Reroll Destination</button>
-      <button class="btn btn-outline" onclick="nav('p-home','nb-home')" style="padding:13px;font-size:13px;color:var(--t2)">← Back to Preferences</button>
+      <button class="btn btn-primary" onclick="goReveal()" style="font-size:14px;padding:16px" aria-label="Reveal your mystery destination">🔓 Reveal My Destination</button>
+      <button class="btn btn-outline" onclick="reroll()" style="padding:14px;font-size:13px" aria-label="Reroll to a different destination">🎲 Reroll Destination</button>
+      <button class="btn btn-outline" onclick="nav('p-home','nb-home')" style="padding:13px;font-size:13px;color:var(--t2)" aria-label="Back to preferences">← Back to Preferences</button>
     </div>
 
   </div>
 </div>
 
 <!-- ═══ PANE: REVEAL ═══ -->
-<div class="pane" id="p-reveal">
+<div class="pane" id="p-reveal" role="main" aria-label="Your revealed destination">
 
-  <div class="reveal-hero">
+  <div class="reveal-hero" aria-hidden="true">
     <div class="hero-grad" id="heroGrad"></div>
     <div class="hero-dim"></div>
     <div class="hero-grain"></div>
@@ -983,7 +1060,7 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
 
     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
       <div>
-        <div class="hero-dest serif" id="heroDest" style="font-size:2.5rem; color:var(--clay); line-height:1.1; margin-bottom:4px;"></div>
+        <div class="hero-dest serif" id="heroDest" style="font-size:2.5rem; color:var(--clay); line-height:1.1; margin-bottom:4px;" aria-live="polite"></div>
         <div class="hero-tagline serif" id="heroTagline" style="font-size:15px; color:var(--sand); font-style:italic; margin:0;"></div>
       </div>
       <div id="heroBadgeMood" style="background:var(--sage); color:#fff; padding:6px 14px; border-radius:var(--radius-lg); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; flex-shrink:0; white-space:nowrap; margin-left:12px;">Budget Fit</div>
@@ -1004,7 +1081,7 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
     <!-- Budget -->
     <div class="info-block" style="animation-delay:1.3s">
       <div class="ib-head">
-        <span class="ib-ico">💰</span>
+        <span class="ib-ico" aria-hidden="true">💰</span>
         <span class="ib-title serif">Budget</span>
         <span class="ib-tag" id="budgetTag">₹8,500</span>
       </div>
@@ -1014,38 +1091,38 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
     <!-- Day plan -->
     <div class="info-block" style="animation-delay:1.45s">
       <div class="ib-head">
-        <span class="ib-ico">📅</span>
+        <span class="ib-ico" aria-hidden="true">📅</span>
         <span class="ib-title serif">Day Plan</span>
       </div>
       <div class="ib-body">
-        <div class="day-list" id="dayList"></div>
+        <div class="day-list" id="dayList" role="list"></div>
       </div>
     </div>
 
     <!-- Activities -->
     <div class="info-block" style="animation-delay:1.6s">
       <div class="ib-head">
-        <span class="ib-ico">🗺️</span>
+        <span class="ib-ico" aria-hidden="true">🗺️</span>
         <span class="ib-title serif">Experiences</span>
       </div>
-      <div class="ib-body" id="actBody"></div>
+      <div class="ib-body" id="actBody" role="list"></div>
     </div>
 
     <!-- Food -->
     <div class="info-block" style="animation-delay:1.75s">
       <div class="ib-head">
-        <span class="ib-ico">🍽️</span>
+        <span class="ib-ico" aria-hidden="true">🍽️</span>
         <span class="ib-title serif">Where to Eat</span>
       </div>
       <div class="ib-body">
-        <div class="food-rail" id="foodRail"></div>
+        <div class="food-rail" id="foodRail" role="list"></div>
       </div>
     </div>
 
     <!-- AI Notes -->
     <div class="info-block" style="animation-delay:1.9s">
       <div class="ib-head">
-        <span class="ib-ico">✍️</span>
+        <span class="ib-ico" aria-hidden="true">✍️</span>
         <span class="ib-title serif">Travel Notes</span>
         <span class="ib-tag">AI ✦</span>
       </div>
@@ -1054,14 +1131,14 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
 
     <!-- Map -->
     <div class="info-block" style="animation-delay:2.0s">
-      <div class="ib-head"><span class="ib-ico">🗺️</span><span class="ib-title serif">Location</span></div>
+      <div class="ib-head"><span class="ib-ico" aria-hidden="true">🗺️</span><span class="ib-title serif">Location</span></div>
       <div class="ib-body">
-        <div class="map-frame">
-          <div class="map-lines"></div>
-          <div class="map-road-h"></div>
-          <div class="map-road-v"></div>
+        <div class="map-frame" aria-label="Decorative map showing destination location">
+          <div class="map-lines" aria-hidden="true"></div>
+          <div class="map-road-h" aria-hidden="true"></div>
+          <div class="map-road-v" aria-hidden="true"></div>
           <div class="map-center">
-            <div class="map-pin">📍</div>
+            <div class="map-pin" aria-hidden="true">📍</div>
             <div class="map-name" id="mapName">VAGAMON</div>
           </div>
         </div>
@@ -1070,101 +1147,169 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; transform: sc
 
     <!-- Actions -->
     <div class="reveal-actions">
-      <button class="btn btn-primary btn-small" onclick="saveTrip()">💾 Save</button>
-      <button class="btn btn-outline btn-small" onclick="reroll()">🎲 Reroll</button>
+      <button class="btn btn-primary btn-small" onclick="saveTrip()" aria-label="Save this trip">💾 Save</button>
+      <button class="btn btn-outline btn-small" onclick="reroll()" aria-label="Generate a different destination">🎲 Reroll</button>
     </div>
 
-    <div class="share-row" onclick="shareTrip()">
-      <span class="share-ico">📤</span>
+    <div class="share-row" onclick="shareTrip()" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')shareTrip()" aria-label="Share your mystery trip">
+      <span class="share-ico" aria-hidden="true">📤</span>
       <div class="share-info">
         <div class="share-title">Share the mystery</div>
         <div class="share-sub">Let friends guess where you're going</div>
       </div>
-      <span class="share-arr">→</span>
+      <span class="share-arr" aria-hidden="true">→</span>
     </div>
 
   </div>
 </div>
 
 <!-- ═══ PANE: SAVED ═══ -->
-<div class="pane" id="p-saved">
+<div class="pane" id="p-saved" role="main" aria-label="Your saved trips">
   <div class="saved-h-row">
     <h2 class="saved-h serif">Saved Trips</h2>
     <p class="saved-sub">Your personal travel journal</p>
   </div>
-  <div class="saved-grid" id="savedGrid"></div>
+  <div class="saved-grid" id="savedGrid" role="list"></div>
 </div>
 
 <!-- Bottom Nav -->
-<div id="nav">
-  <button class="nb on" id="nb-home" onclick="nav('p-home','nb-home')">
-    <span class="nb-ico">🏠</span><span>Discover</span><div class="nb-line"></div>
+<nav id="nav" aria-label="Main navigation">
+  <button class="nb on" id="nb-home" onclick="nav('p-home','nb-home')" aria-label="Discover" aria-current="page">
+    <span class="nb-ico" aria-hidden="true">🏠</span><span>Discover</span><div class="nb-line" aria-hidden="true"></div>
   </button>
-  <button class="nb" id="nb-mystery" onclick="nav('p-mystery','nb-mystery')">
-    <span class="nb-ico">🔮</span><span>Mystery</span><div class="nb-line"></div>
+  <button class="nb" id="nb-mystery" onclick="nav('p-mystery','nb-mystery')" aria-label="Mystery destination">
+    <span class="nb-ico" aria-hidden="true">🔮</span><span>Mystery</span><div class="nb-line" aria-hidden="true"></div>
   </button>
-  <button class="nb" id="nb-reveal" onclick="nav('p-reveal','nb-reveal')">
-    <span class="nb-ico">📍</span><span>Reveal</span><div class="nb-line"></div>
+  <button class="nb" id="nb-reveal" onclick="nav('p-reveal','nb-reveal')" aria-label="Reveal destination">
+    <span class="nb-ico" aria-hidden="true">📍</span><span>Reveal</span><div class="nb-line" aria-hidden="true"></div>
   </button>
-  <button class="nb" id="nb-saved" onclick="nav('p-saved','nb-saved');renderSaved()">
-    <span class="nb-ico">🗂️</span><span>Trips</span><div class="nb-line"></div>
+  <button class="nb" id="nb-saved" onclick="nav('p-saved','nb-saved');renderSaved()" aria-label="Saved trips">
+    <span class="nb-ico" aria-hidden="true">🗂️</span><span>Trips</span><div class="nb-line" aria-hidden="true"></div>
   </button>
-</div>
+</nav>
 
-<div id="toast"></div>
+<div id="toast" role="alert" aria-live="assertive"></div>
+
+<!-- Share canvas modal -->
+<div id="shareModal" role="dialog" aria-modal="true" aria-label="Share your trip" onclick="if(event.target===this)closeShareModal()">
+  <div class="share-modal-inner">
+    <canvas id="shareCanvas" width="320" height="480"></canvas>
+    <div class="share-modal-btns">
+      <button class="btn btn-primary btn-small" onclick="downloadShareCard()" aria-label="Download share image">⬇ Download</button>
+      <button class="btn btn-outline btn-small" onclick="copyShareText()" aria-label="Copy share text">📋 Copy Text</button>
+    </div>
+    <button class="btn btn-outline btn-small" onclick="closeShareModal()" style="width:100%;padding:10px;font-size:12px;color:var(--t3)" aria-label="Close share modal">✕ Close</button>
+  </div>
+</div>
 
 <script>
 /* ══════════════════════
    STATE
 ══════════════════════ */
 let mood = 'Chill', budget = 8500, dur = '3 Days', style = 'Solo 🧘', season = 'Oct – Feb ❄️';
-let dest = null, cdTimer = null, cdSecs = 23*3600 + 59*60 + 47;
-let saved = JSON.parse(localStorage.getItem('yatr_v1') || '[]');
+let dest = null, cdTimer = null;
+let saved = JSON.parse(localStorage.getItem('yatr_v2') || '[]');
+
+/* ══════════════════════
+   SEASON KEYS
+══════════════════════ */
+const SEASON_MAP = {
+  'Oct – Feb ❄️': 'winter',
+  'Mar – May 🌸': 'summer',
+  'Jun – Sep 🌧️': 'monsoon'
+};
 
 /* ══════════════════════
    DESTINATIONS DB
+   Each entry has:
+   - minBudget / maxBudget (per person in ₹)
+   - seasons: array of 'winter'|'summer'|'monsoon'
+   - heroImg: Unsplash URL
 ══════════════════════ */
 const DB = {
-  Chill: [{
-    name: 'Varkala', state: 'Kerala',
-    tagline: '"Where red cliffs meet the Arabian Sea"',
-    bg: 'linear-gradient(160deg,#0D3550 0%,#1B6B88 50%,#C2714F 100%)',
-    emoji: '🌊',
-    hints: [
-      {i:'🌊', t:'Towering red laterite cliffs drop straight into the sea here.'},
-      {i:'🧘', t:'A sacred beach town beloved by yogis and wanderers.'},
-      {i:'🦞', t:'Fresh lobster from beach shacks for under ₹200.'}
-    ],
-    budget: [
-      {l:'2 nights beach stay', a:'₹2,200', p:.26},
-      {l:'Food & coconuts',     a:'₹1,400', p:.16},
-      {l:'Cliff walk & spa',    a:'₹900',   p:.11},
-      {l:'Train / bus',         a:'₹1,200', p:.14},
-      {l:'Misc',                a:'₹400',   p:.05}
-    ],
-    days: [
-      {t:'6 AM',  act:'Sunrise Cliff Walk',    note:'North Cliff glows amber at first light.'},
-      {t:'9 AM',  act:'Papanasam Beach',        note:'Sacred dip in warm surf.'},
-      {t:'12 PM', act:'Rooftop seafood lunch',  note:'Grilled fish + coconut chutney for ₹180.'},
-      {t:'4 PM',  act:'Ayurvedic massage',      note:'Traditional Kerala oil therapy.'},
-      {t:'6 PM',  act:'Sunset at Helipad',      note:'Best free sunset in all of Kerala.'}
-    ],
-    acts: [
-      {i:'🧘', n:'Cliff-edge Yoga',    d:'Morning sessions on the clifftop at ₹200.'},
-      {i:'🚣', n:'Backwater Kayak',    d:'Paddle mangroves in golden light.'},
-      {i:'🛍️', n:'Night Market',       d:'Crafts & snacks under oil lamps.'},
-      {i:'🔦', n:'Lighthouse Hike',    d:'15-min trail to panoramic views.'}
-    ],
-    food: ['Clafouti Café ☕','Abba Restaurant 🐟','Rock n Roll Café 🍳','Darjeeling Café 🫖'],
-    notes: '<b>Best time:</b> October–March. <b>Getting there:</b> Train to Varkala Sivagiri (3h from Trivandrum). <b>Hidden tip:</b> The parallel lanes behind the cliff road have authentic dhabas at one-third the tourist price. <b>Don\'t miss:</b> The 6 AM fishermen\'s catch on the beach.'
-  }],
+  Chill: [
+    {
+      name: 'Varkala', state: 'Kerala',
+      tagline: '"Where red cliffs meet the Arabian Sea"',
+      bg: 'linear-gradient(160deg,#0D3550 0%,#1B6B88 50%,#C2714F 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=1200',
+      emoji: '🌊',
+      minBudget: 3000, maxBudget: 15000,
+      seasons: ['winter'],
+      hints: [
+        {i:'🌊', t:'Towering red laterite cliffs drop straight into the sea here.'},
+        {i:'🧘', t:'A sacred beach town beloved by yogis and wanderers.'},
+        {i:'🦞', t:'Fresh lobster from beach shacks for under ₹200.'}
+      ],
+      budget: [
+        {l:'2 nights beach stay', a:'₹2,200', p:.26},
+        {l:'Food & coconuts',     a:'₹1,400', p:.16},
+        {l:'Cliff walk & spa',    a:'₹900',   p:.11},
+        {l:'Train / bus',         a:'₹1,200', p:.14},
+        {l:'Misc',                a:'₹400',   p:.05}
+      ],
+      days: [
+        {t:'6 AM',  act:'Sunrise Cliff Walk',    note:'North Cliff glows amber at first light.'},
+        {t:'9 AM',  act:'Papanasam Beach',        note:'Sacred dip in warm surf.'},
+        {t:'12 PM', act:'Rooftop seafood lunch',  note:'Grilled fish + coconut chutney for ₹180.'},
+        {t:'4 PM',  act:'Ayurvedic massage',      note:'Traditional Kerala oil therapy.'},
+        {t:'6 PM',  act:'Sunset at Helipad',      note:'Best free sunset in all of Kerala.'}
+      ],
+      acts: [
+        {i:'🧘', n:'Cliff-edge Yoga',    d:'Morning sessions on the clifftop at ₹200.'},
+        {i:'🚣', n:'Backwater Kayak',    d:'Paddle mangroves in golden light.'},
+        {i:'🛍️', n:'Night Market',       d:'Crafts & snacks under oil lamps.'},
+        {i:'🔦', n:'Lighthouse Hike',    d:'15-min trail to panoramic views.'}
+      ],
+      food: ['Clafouti Café ☕','Abba Restaurant 🐟','Rock n Roll Café 🍳','Darjeeling Café 🫖'],
+      notes: '<b>Best time:</b> October–March. <b>Getting there:</b> Train to Varkala Sivagiri (3h from Trivandrum). <b>Hidden tip:</b> The parallel lanes behind the cliff road have authentic dhabas at one-third the tourist price. <b>Don\'t miss:</b> The 6 AM fishermen\'s catch on the beach.'
+    },
+    {
+      name: 'Pondicherry', state: 'Tamil Nadu',
+      tagline: '"A French soul in a Tamil city"',
+      bg: 'linear-gradient(160deg,#0A1A28 0%,#1A3A5A 50%,#C8A87A 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1617519938272-0aaf4e8b4571?auto=format&fit=crop&q=80&w=1200',
+      emoji: '🏛️',
+      minBudget: 4000, maxBudget: 20000,
+      seasons: ['winter', 'summer'],
+      hints: [
+        {i:'🏛️', t:'Yellow and white colonial villas line streets that smell of bougainvillea.'},
+        {i:'🌊', t:'A promenade where locals do yoga at dawn facing the Bay of Bengal.'},
+        {i:'🥐', t:'The best croissants in India, baked by a hundred-year-old French bakery.'}
+      ],
+      budget: [
+        {l:'2 nights heritage stay', a:'₹3,800', p:.45},
+        {l:'Food & café',            a:'₹1,600', p:.19},
+        {l:'Auroville day trip',     a:'₹800',   p:.09},
+        {l:'Beach & cycle',          a:'₹500',   p:.06}
+      ],
+      days: [
+        {t:'5:30 AM', act:'Promenade Sunrise', note:'Yoga practitioners and fishermen share the shore.'},
+        {t:'8 AM',    act:'French Quarter Walk', note:'The white and yellow villas glow in morning light.'},
+        {t:'11 AM',   act:'Auroville',           note:'UNESCO-listed experimental township, 10km out.'},
+        {t:'3 PM',    act:'Serenity Beach',       note:'Quieter and cleaner than the main beach.'},
+        {t:'7 PM',    act:'Mission Street Dinner',note:'Tamil–French fusion on a candlelit terrace.'}
+      ],
+      acts: [
+        {i:'🚲', n:'Heritage Cycle Tour',   d:'Rent a cycle, follow the French quarter map.'},
+        {i:'🧘', n:'Sri Aurobindo Ashram',  d:'Morning meditation — open to all, deeply calming.'},
+        {i:'🏊', n:'Serenity Beach',        d:'Surfing lessons at dawn; ₹400 for 1 hour.'},
+        {i:'☕', n:'Baker Street Café',     d:'Hidden basement café with the best filter coffee.'}
+      ],
+      food: ['Baker Street 🥐','Café des Arts ☕','Surguru 🍛','Satsanga ☕'],
+      notes: '<b>Best time:</b> October–March. <b>Getting there:</b> Bus from Chennai (3h) or Bengaluru (7h). <b>Hidden tip:</b> White Town stays are pricier but the streets flood with jasmine sellers at 6 AM — worth it. <b>Auroville tip:</b> Book the Matri Mandir inner chamber visit 2 days ahead.'
+    }
+  ],
 
   Adventure: [
     {
       name: 'Hampi', state: 'Karnataka',
       tagline: '"Ruins that outlast empires"',
       bg: 'linear-gradient(160deg,#3A1508 0%,#8A3A18 50%,#D4904A 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1565358985145-eabf48c9f5ad?auto=format&fit=crop&q=80&w=1200',
       emoji: '🗿',
+      minBudget: 3500, maxBudget: 18000,
+      seasons: ['winter'],
       hints: [
         {i:'🗿', t:'Millions of boulders form a surreal volcanic landscape here.'},
         {i:'🏯', t:'Once the world\'s second-largest city.'},
@@ -1197,7 +1342,10 @@ const DB = {
       name: 'Tirthan Valley', state: 'Himachal Pradesh',
       tagline: '"The valley time forgot"',
       bg: 'linear-gradient(160deg,#0A1E0A 0%,#1A4A28 50%,#6A9A72 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1605541850776-e6f53bd3291b?auto=format&fit=crop&q=80&w=1200',
       emoji: '🏔️',
+      minBudget: 5000, maxBudget: 18000,
+      seasons: ['summer', 'winter'],
       hints: [
         {i:'🏔️', t:'This valley borders the Great Himalayan National Park.'},
         {i:'🐟', t:'River so clear you can see trout in 10 feet of water.'},
@@ -1219,11 +1367,46 @@ const DB = {
       acts: [
         {i:'🥾', n:'Jalori Pass Trek',     d:'6km oak & rhododendron forest to a 3,120m mountain pass.'},
         {i:'🏞️', n:'Serolsar Lake',        d:'Hidden glacial lake beyond Jalori — bring lunch, stay all day.'},
-        {i:'🏡', n:'Village Hike to Chhoie', d:'200-year-old stone village with traditional wood architecture.'},
+        {i:'🏡', n:'Village Hike',         d:'200-year-old stone village with traditional wood architecture.'},
         {i:'🎣', n:'River Picnic',         d:'Find a flat boulder, unpack a meal, let the river soundtrack you.'}
       ],
       food: ['Raju Bharti Homestay 🏠','Shoja Pine Café ☕','Highway Dhaba Bhuntar 🍛','Trout Farm Lunch 🐟'],
-      notes: '<b>Best time:</b> April–June, Sept–November. <b>Getting there:</b> Fly Bhuntar, shared taxi. <b>Hidden tip:</b> Carry cash — no ATMs beyond Aut tunnel. Mobile signal is limited (this is a feature, not a bug). <b>Book ahead:</b> Homestays fill 3 weeks out in peak season.'
+      notes: '<b>Best time:</b> April–June, Sept–November. <b>Getting there:</b> Fly Bhuntar, shared taxi. <b>Hidden tip:</b> Carry cash — no ATMs beyond Aut tunnel. Mobile signal is limited (this is a feature, not a bug).'
+    },
+    {
+      name: 'Ziro Valley', state: 'Arunachal Pradesh',
+      tagline: '"The most beautiful valley you\'ve never heard of"',
+      bg: 'linear-gradient(160deg,#061A10 0%,#1A3A20 50%,#5A9A62 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=1200',
+      emoji: '🌾',
+      minBudget: 8000, maxBudget: 25000,
+      seasons: ['winter', 'summer'],
+      hints: [
+        {i:'🌾', t:'Apatani rice paddies and pine forests stretch to every horizon.'},
+        {i:'🎵', t:'India\'s most authentic music festival happens in a forest clearing here.'},
+        {i:'🦅', t:'One of Northeast India\'s best birdwatching valleys.'}
+      ],
+      budget: [
+        {l:'3 nights homestay',  a:'₹3,600', p:.45},
+        {l:'Meals (local)',       a:'₹1,500', p:.19},
+        {l:'Trekking guide',      a:'₹1,200', p:.15},
+        {l:'Ziro to Itanagar',    a:'₹2,800', p:.35}
+      ],
+      days: [
+        {t:'6 AM',  act:'Paddy Field Sunrise',    note:'Mist pours through the valley in layers.'},
+        {t:'9 AM',  act:'Apatani Village Walk',   note:'Meet families who have farmed here for 400 years.'},
+        {t:'12 PM', act:'Local Market Lunch',     note:'Smoked pork, bamboo shoot curry, rice beer.'},
+        {t:'3 PM',  act:'Talley Valley Trek',     note:'Ancient subtropical forest starts 3km from town.'},
+        {t:'7 PM',  act:'Homestay Fire Stories',  note:'Hosts share tribal myths over a wood fire.'}
+      ],
+      acts: [
+        {i:'🎶', n:'Ziro Festival of Music',  d:'4-day outdoor festival in September — indie India at its best.'},
+        {i:'🌿', n:'Talley Valley Sanctuary', d:'Trek into one of India\'s least-visited wildlife sanctuaries.'},
+        {i:'🏺', n:'Bamboo Craft Workshop',   d:'Apatani weavers teach bamboo basket-making in their homes.'},
+        {i:'🐦', n:'Dawn Birdwatching',       d:'Over 400 species — great hornbill, green peacock.'}
+      ],
+      food: ['Pine Ridge Homestay 🏡','Ziro Market Stalls 🥘','Blue Pine Café ☕','Apatani Kitchen 🍳'],
+      notes: '<b>Getting there:</b> Ziro requires an Inner Line Permit (ILP) — get it online before flying to Itanagar. <b>Best time:</b> September (festival), March–April (bloom). <b>Hidden tip:</b> Visit Hong village early morning when the women wear traditional nose plugs — a living cultural tradition.'
     }
   ],
 
@@ -1232,7 +1415,10 @@ const DB = {
       name: 'Vagamon', state: 'Kerala',
       tagline: '"Where mist is the morning prayer"',
       bg: 'linear-gradient(160deg,#071A0F 0%,#1A4A28 50%,#5A8A62 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&q=80&w=1200',
       emoji: '☁️',
+      minBudget: 4000, maxBudget: 20000,
+      seasons: ['winter', 'summer'],
       hints: [
         {i:'☁️', t:'Every morning, meadows are completely swallowed by mist.'},
         {i:'🌿', t:'Rolling tea estates at 1,100m — cooler than any town below.'},
@@ -1264,7 +1450,10 @@ const DB = {
       name: 'Gokarna', state: 'Karnataka',
       tagline: '"Goa\'s soulful, spiritual sister"',
       bg: 'linear-gradient(160deg,#0D1A2A 0%,#1A3A58 50%,#C2714F 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=1200',
       emoji: '🛕',
+      minBudget: 2500, maxBudget: 12000,
+      seasons: ['winter'],
       hints: [
         {i:'🛕', t:'One of India\'s most sacred Shiva temples sits at its heart.'},
         {i:'🌊', t:'Hidden beaches reachable only by trekking clifftop paths.'},
@@ -1291,6 +1480,41 @@ const DB = {
       ],
       food: ['Namaste Café 🍵','Pai Hotel 🍛','Shree Shakti 🌮','Sunset Café 🌅'],
       notes: '<b>Best time:</b> October–March. <b>Transport:</b> Train to Gokarna Road station (scenic). <b>Hidden tip:</b> Base yourself at Kudle Beach — quieter than Om, half the price. <b>Respect:</b> Dress modestly in the temple lanes — this is a living pilgrimage town.'
+    },
+    {
+      name: 'Majuli', state: 'Assam',
+      tagline: '"The world\'s largest river island, slowly vanishing"',
+      bg: 'linear-gradient(160deg,#0A1A10 0%,#2A5A38 50%,#7AAA72 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1598091383021-15ddea10925d?auto=format&fit=crop&q=80&w=1200',
+      emoji: '🏝️',
+      minBudget: 4000, maxBudget: 15000,
+      seasons: ['winter'],
+      hints: [
+        {i:'🏝️', t:'This island shrinks every monsoon — it may vanish in 30 years.'},
+        {i:'🎭', t:'Home to the Sattriya dance, a 600-year-old classical tradition.'},
+        {i:'🐦', t:'Over 200 migratory bird species land here each winter.'}
+      ],
+      budget: [
+        {l:'2 nights eco-stay',    a:'₹2,200', p:.28},
+        {l:'Meals (local)',        a:'₹1,000', p:.13},
+        {l:'Cycle rental',         a:'₹300',   p:.04},
+        {l:'Ferry + bus',          a:'₹800',   p:.10}
+      ],
+      days: [
+        {t:'6 AM',  act:'Ferry Arrival at Sunrise', note:'Watch the mighty Brahmaputra fog lift as you land.'},
+        {t:'9 AM',  act:'Sattriya Dance Practice',  note:'Monks rehearse classical dance at Kamalabari Satra.'},
+        {t:'12 PM', act:'Cycle the Island',         note:'Flat paths through paddy fields and mustard flowers.'},
+        {t:'4 PM',  act:'Potter\'s Village',        note:'Salmora — families make terracotta pots for generations.'},
+        {t:'7 PM',  act:'Sunset by the River',      note:'Watch the Brahmaputra turn gold and then dark.'}
+      ],
+      acts: [
+        {i:'🎭', n:'Sattriya Performance',   d:'Evening cultural shows at the Satra monasteries.'},
+        {i:'🐦', n:'Bird Sanctuary Visit',   d:'November–March: pelicans, cranes, and rare migratory birds.'},
+        {i:'🏺', n:'Mask Making Workshop',   d:'Traditional Assamese masks carved by families in bamboo groves.'},
+        {i:'⛵', n:'Brahmaputra Sunset Row',  d:'Rent a wooden boat and row into the wide open river.'}
+      ],
+      food: ['Kamalabari Satra Kitchen 🍛','Majuli Circuit House 🏡','River View Dhaba 🌊','Local Thali Stall 🥘'],
+      notes: '<b>Getting there:</b> Jorhat (Assam) → 1.5h bus → Nimati Ghat → 1h ferry to Majuli. <b>Best time:</b> November–March. <b>Hidden tip:</b> The Auniati Satra has the finest collection of Ahom-era artefacts — ask the monks to show you. <b>Note:</b> Book accommodation well ahead — island has limited beds.'
     }
   ],
 
@@ -1299,7 +1523,10 @@ const DB = {
       name: 'Yercaud', state: 'Tamil Nadu',
       tagline: '"The jewel of the Shevaroy highlands"',
       bg: 'linear-gradient(160deg,#1A0A28 0%,#4A2A68 50%,#C4A070 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=1200',
       emoji: '☕',
+      minBudget: 3500, maxBudget: 14000,
+      seasons: ['summer', 'winter'],
       hints: [
         {i:'☕', t:'You\'ll wake to the scent of fresh Arabica — estates surround the town.'},
         {i:'🌸', t:'The Shevaroy Hills bloom with orange blossoms every March.'},
@@ -1326,13 +1553,16 @@ const DB = {
         {i:'🏞️', n:'Viewpoint Cascade Walk',   d:'Gentle trail connecting five viewpoints above cloud level.'}
       ],
       food: ['TN Rooftop Hotel 🍛','Green Chilli Café 🌶️','Estate Kitchen Thali 🥘','Lady\'s Seat Snacks 🌅'],
-      notes: '<b>Best time:</b> March–June (orange blossom), Oct–Jan (clear skies). <b>Base:</b> Salem (30km, 45 min). <b>Hidden tip:</b> The Saturday tribal market starts at 6 AM — go early for the freshest forest honey in Tamil Nadu. <b>Avoid:</b> Weekend peak traffic on the ghat road.'
+      notes: '<b>Best time:</b> March–June (orange blossom), Oct–Jan (clear skies). <b>Base:</b> Salem (30km, 45 min). <b>Hidden tip:</b> The Saturday tribal market starts at 6 AM — go early for the freshest forest honey in Tamil Nadu.'
     },
     {
       name: 'Hampi', state: 'Karnataka',
       tagline: '"A living museum of Vijayanagara glory"',
       bg: 'linear-gradient(160deg,#2A0E04 0%,#7A2E10 50%,#D49040 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?auto=format&fit=crop&q=80&w=1200',
       emoji: '🏛️',
+      minBudget: 3500, maxBudget: 15000,
+      seasons: ['winter'],
       hints: [
         {i:'🏛️', t:'UNESCO World Heritage Site — Vijayanagara Empire, 700 years old.'},
         {i:'🪨', t:'The boulders here are among the oldest exposed rock on Earth.'},
@@ -1360,6 +1590,41 @@ const DB = {
       ],
       food: ['Laughing Buddha 😄','Mango Tree 🌳','Gopi Roof Terrace 🏠','Old Market Dosa 🫓'],
       notes: '<b>Best time:</b> November–February. <b>Carry:</b> Archaeology pass (₹600) — some sites are gated. <b>Cultural tip:</b> Always circle temples clockwise, remove footwear at entrance. <b>Extra day:</b> Anegundi village north across the river is ancient and untouched.'
+    },
+    {
+      name: 'Patan', state: 'Gujarat',
+      tagline: '"Gujarat\'s forgotten medieval capital"',
+      bg: 'linear-gradient(160deg,#1A0A04 0%,#4A2A10 50%,#D4A060 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1535530992830-e25d07cfa780?auto=format&fit=crop&q=80&w=1200',
+      emoji: '🕌',
+      minBudget: 2000, maxBudget: 10000,
+      seasons: ['winter'],
+      hints: [
+        {i:'🕌', t:'An 11th-century stepwell with more than 800 intricately carved pillars stands here.'},
+        {i:'🧵', t:'The Patola sari takes six months to weave one piece — a living UNESCO tradition.'},
+        {i:'🏰', t:'This was the capital of a dynasty that controlled half of India for 400 years.'}
+      ],
+      budget: [
+        {l:'1 night heritage hotel', a:'₹1,800', p:.22},
+        {l:'Food & chai',            a:'₹800',   p:.10},
+        {l:'Patola loom visit',      a:'₹200',   p:.02},
+        {l:'Bus from Ahmedabad',     a:'₹400',   p:.05}
+      ],
+      days: [
+        {t:'6 AM',  act:'Rani ki Vav Sunrise',      note:'The stepwell is empty and golden before 8 AM.'},
+        {t:'9 AM',  act:'Patola Weaving Families',  note:'Watch a single sari being woven on a traditional loom.'},
+        {t:'12 PM', act:'Old City Heritage Walk',   note:'700-year-old havelis line quiet bazaar streets.'},
+        {t:'4 PM',  act:'Sahasralinga Talav',       note:'Ancient reservoir with 1,000 Shiva lingas.'},
+        {t:'7 PM',  act:'Evening Thali',            note:'Gujarati thali — 14 dishes for ₹120.'}
+      ],
+      acts: [
+        {i:'🏛️', n:'Rani ki Vav',          d:'UNESCO-listed stepwell — one of the greatest architectural achievements in India.'},
+        {i:'🧵', n:'Patola Silk Weaving',  d:'Only 3 families still weave this double ikat technique.'},
+        {i:'🎪', n:'Patan Bazaar',         d:'Antique silver jewellery, clay pots, and old Gujarat in one lane.'},
+        {i:'🌅', n:'Sunset at Sahastralinga', d:'Ancient tanks turn coral-gold at dusk.'}
+      ],
+      food: ['Chandra Vilas Thali 🥘','Swati Snacks 🍛','Patan Station Chai ☕','Market Fafda 🥜'],
+      notes: '<b>Getting there:</b> 120km from Ahmedabad — easy day trip or overnight. <b>Best time:</b> October–March. <b>Hidden tip:</b> The Patola families only allow visits by appointment — ask your hotel to call ahead the night before. <b>Don\'t miss:</b> Arriving at Rani ki Vav exactly at 7 AM when the light hits the lowest tier.'
     }
   ],
 
@@ -1368,7 +1633,10 @@ const DB = {
       name: 'Alleppey Backwaters', state: 'Kerala',
       tagline: '"A floating world lit by fireflies"',
       bg: 'linear-gradient(160deg,#040E14 0%,#0A2818 50%,#3A7858 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&q=80&w=1200',
       emoji: '🛶',
+      minBudget: 6000, maxBudget: 25000,
+      seasons: ['winter'],
       hints: [
         {i:'🛶', t:'You sleep on a wooden kettuvallam boat on open water.'},
         {i:'🌴', t:'Coconut palms line every canal for as far as the eye can see.'},
@@ -1400,7 +1668,10 @@ const DB = {
       name: 'Coorg', state: 'Karnataka',
       tagline: '"Scotland of India, scent of coffee"',
       bg: 'linear-gradient(160deg,#060E06 0%,#1A3A18 50%,#6A9A58 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1580793900459-1e4a16a3ecff?auto=format&fit=crop&q=80&w=1200',
       emoji: '🌿',
+      minBudget: 5000, maxBudget: 22000,
+      seasons: ['winter', 'summer'],
       hints: [
         {i:'☕', t:'You\'ll wake to the scent of estate-harvested Arabica every morning.'},
         {i:'🐘', t:'Elephants are bathed in the Cauvery river at dawn nearby.'},
@@ -1427,6 +1698,41 @@ const DB = {
       ],
       food: ['Rainforest Restaurant 🌧️','Raintree Madikeri 🌳','Coorg Cuisine 🏡','Estate Home Dining 🍛'],
       notes: '<b>Best time:</b> October–May. <b>Essential:</b> Book a coffee estate homestay — standard hotels entirely miss the point. <b>Romantic tip:</b> Request the forest-view cottage and wake up to mist in the trees. <b>Don\'t miss:</b> The Saturday Madikeri market for local honey and spices.'
+    },
+    {
+      name: 'Dzukou Valley', state: 'Nagaland',
+      tagline: '"A valley of a thousand blooming lilies"',
+      bg: 'linear-gradient(160deg,#050F18 0%,#183A28 50%,#68A878 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1605015820988-96dba7f7985b?auto=format&fit=crop&q=80&w=1200',
+      emoji: '🌸',
+      minBudget: 6000, maxBudget: 20000,
+      seasons: ['summer'],
+      hints: [
+        {i:'🌸', t:'Every summer, this valley turns completely white with Dzukou lilies.'},
+        {i:'🏔️', t:'You camp at 2,400m with no phone signal and total darkness.'},
+        {i:'🌌', t:'The Milky Way is visible here with the naked eye for months.'}
+      ],
+      budget: [
+        {l:'2 nights camp stay',   a:'₹2,400', p:.30},
+        {l:'Meals (basic)',        a:'₹1,200', p:.15},
+        {l:'Trekking permit',      a:'₹400',   p:.05},
+        {l:'Dimapur to Kohima',    a:'₹3,000', p:.38}
+      ],
+      days: [
+        {t:'8 AM',  act:'Kohima Drive',           note:'Hour-long drive through Naga hills to trek start.'},
+        {t:'10 AM', act:'Trek up to Valley',      note:'4km moderate climb through bamboo forest.'},
+        {t:'2 PM',  act:'Valley Camp Setup',      note:'Bamboo huts at the valley floor — pure remoteness.'},
+        {t:'5 PM',  act:'Lily Field Walk',        note:'Walk knee-deep into the white and pink lily fields.'},
+        {t:'8 PM',  act:'Campfire under stars',   note:'Cook noodles, share stories, watch meteors fall.'}
+      ],
+      acts: [
+        {i:'🥾', n:'Valley Circuit Trek',        d:'Full loop of the valley floor through bamboo and reed meadows.'},
+        {i:'🌄', n:'Japfu Peak Summit',          d:'Optional 4km side trail to highest point in Nagaland.'},
+        {i:'📷', n:'Lily Photography',           d:'June–August: unprecedented density of wild lily blooms.'},
+        {i:'🏡', n:'Kohima War Cemetery',        d:'One of the most moving WWII memorials in all of Asia.'}
+      ],
+      food: ['Trekkers\' Kitchen Camp 🔥','Kohima Market Naga 🥩','Bamboo Shoot Curry 🍛','Valley Stream Water ✨'],
+      notes: '<b>Best time:</b> June–September (lilies in bloom). <b>Permits:</b> ILP for Nagaland required — apply online. <b>Getting there:</b> Fly Dimapur, drive to Kohima (2h), trek to Dzukou. <b>Hidden tip:</b> Dzukou lily blooms peak in early July — plan for that exact window.'
     }
   ],
 
@@ -1435,7 +1741,10 @@ const DB = {
       name: 'Varanasi', state: 'Uttar Pradesh',
       tagline: '"The oldest living city on Earth"',
       bg: 'linear-gradient(160deg,#1A0804 0%,#4A280E 50%,#D49248 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1561361058-c24cecae35ca?auto=format&fit=crop&q=80&w=1200',
       emoji: '🕯️',
+      minBudget: 4000, maxBudget: 20000,
+      seasons: ['winter'],
       hints: [
         {i:'🕯️', t:'3,000 clay lamps are lit on this river every single evening.'},
         {i:'🌊', t:'This river has been worshipped every morning for 4,000 years.'},
@@ -1468,7 +1777,10 @@ const DB = {
       name: 'Rishikesh', state: 'Uttarakhand',
       tagline: '"Where the Himalayas meet the soul"',
       bg: 'linear-gradient(160deg,#080818 0%,#182848 50%,#5A7A98 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1518002054494-3a6f94352e9d?auto=format&fit=crop&q=80&w=1200',
       emoji: '🕉️',
+      minBudget: 2500, maxBudget: 15000,
+      seasons: ['winter', 'summer'],
       hints: [
         {i:'🕉️', t:'The global capital of yoga — ashrams line both riverbanks.'},
         {i:'🏔️', t:'The Ganges here is vivid turquoise, cold, and spectacularly fast.'},
@@ -1496,6 +1808,41 @@ const DB = {
       ],
       food: ['Little Buddha Café 🧘','Chotiwala Restaurant 🍛','60s Café 🎸','Freedom Café 🌿'],
       notes: '<b>Best time:</b> October–June. <b>Note:</b> Alcohol and non-veg are prohibited in Rishikesh. <b>Hidden tip:</b> Stay on the Tapovan side — quieter than Laxman Jhula and half the price. <b>Spiritual bonus:</b> Attend a full-moon aarti — the energy is extraordinary.'
+    },
+    {
+      name: 'Spiti Valley', state: 'Himachal Pradesh',
+      tagline: '"The middle land between India and Tibet"',
+      bg: 'linear-gradient(160deg,#0A0A1A 0%,#2A2A4A 50%,#7A7AA0 100%)',
+      heroImg: 'https://images.unsplash.com/photo-1586288774355-c20c14b35aad?auto=format&fit=crop&q=80&w=1200',
+      emoji: '🏔️',
+      minBudget: 8000, maxBudget: 25000,
+      seasons: ['summer'],
+      hints: [
+        {i:'🏔️', t:'At 3,800m, the sky here is a darker blue than anywhere else in India.'},
+        {i:'🔔', t:'Buddhist monasteries that predate India\'s oldest mosques still ring bells at 4 AM.'},
+        {i:'🐆', t:'One of only two places in India where you can legally spot the snow leopard.'}
+      ],
+      budget: [
+        {l:'3 nights monastery stay', a:'₹3,000', p:.38},
+        {l:'Meals (basic)',           a:'₹1,500', p:.19},
+        {l:'Jeep rental',             a:'₹3,600', p:.45},
+        {l:'Shimla to Kaza bus',      a:'₹1,400', p:.18}
+      ],
+      days: [
+        {t:'Dawn',   act:'Key Monastery Prayers', note:'600-year-old monks chanting in the 4 AM silence.'},
+        {t:'8 AM',   act:'Kaza Village Walk',     note:'Barley fields, prayer flags, cold clean air.'},
+        {t:'11 AM',  act:'Chicham Bridge',        note:'Asia\'s highest motorable bridge — walk it slowly.'},
+        {t:'2 PM',   act:'Langza Buddha Statue',  note:'Giant Buddha overlooks the fossil-rich Spiti plains.'},
+        {t:'Night',  act:'Milky Way Photography', note:'3,800m altitude, zero light pollution.'}
+      ],
+      acts: [
+        {i:'🕌', n:'Tabo Monastery',           d:'1,000 years old — called the Ajanta of the Himalayas.'},
+        {i:'🐆', n:'Snow Leopard Safari',      d:'November–February: best snow leopard sightings in Asia.'},
+        {i:'🚵', n:'Hamta Pass Ride',          d:'4x4 ride over a 4,270m pass — road to the sky.'},
+        {i:'🌌', n:'Night Sky Observation',    d:'One of Asia\'s darkest skies — the Milky Way is 3D.'}
+      ],
+      food: ['Kaza Homestay Kitchen 🍛','Sichuan at Sol Café ☕','Tabo Monastery Kitchen 🥘','Roadside Maggi & Chai 🍜'],
+      notes: '<b>Best time:</b> June–October (road open). <b>Getting there:</b> Shimla → Rekong Peo → Kaza (2 days by bus or 1 day by jeep). <b>Health:</b> Acclimatise at Manali or Shimla first — altitude sickness is real. <b>Hidden tip:</b> Komic village (4,587m) is the highest motorable village in Asia — 12 families live there.'
     }
   ]
 };
@@ -1514,25 +1861,75 @@ function nav(paneId, btnId) {
       setTimeout(() => p.classList.remove('active', 'out'), 500);
     }
   });
-  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
-  if (btnId) document.getElementById(btnId)?.classList.add('on');
+  document.querySelectorAll('.nb').forEach(b => {
+    b.classList.remove('on');
+    b.removeAttribute('aria-current');
+  });
+  if (btnId) {
+    const btn = document.getElementById(btnId);
+    btn?.classList.add('on');
+    btn?.setAttribute('aria-current', 'page');
+  }
+}
+
+/* ══════════════════════
+   ACCESSIBILITY HANDLERS
+══════════════════════ */
+function keyMood(e, el, m) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pickMood(el, m); }
+}
+function keyChip(e, el, grp) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pickChip(el, grp); }
 }
 
 /* ══════════════════════
    FORM CONTROLS
 ══════════════════════ */
 function pickMood(el, m) {
-  document.querySelectorAll('.mood-pill').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.mood-pill').forEach(p => {
+    p.classList.remove('on');
+    p.setAttribute('aria-checked', 'false');
+  });
   el.classList.add('on', 'pulse');
+  el.setAttribute('aria-checked', 'true');
   setTimeout(() => el.classList.remove('pulse'), 300);
   mood = m;
+  updateAvailBadge();
 }
+
 function pickChip(el, grp) {
-  el.closest('.chip-group').querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  const group = el.closest('.chip-group');
+  group.querySelectorAll('.chip').forEach(c => {
+    c.classList.remove('on');
+    c.setAttribute('aria-checked', 'false');
+  });
   el.classList.add('on');
-  if (grp === 'dur')    dur    = el.textContent.trim();
-  if (grp === 'style')  style  = el.textContent.trim();
-  if (grp === 'season') season = el.textContent.trim();
+  el.setAttribute('aria-checked', 'true');
+  const txt = el.textContent.trim();
+  if (grp === 'dur')    dur    = txt;
+  if (grp === 'style')  style  = txt;
+  if (grp === 'season') { season = txt; updateAvailBadge(); }
+}
+
+/* ── Budget availability preview ── */
+function updateAvailBadge() {
+  const pool = DB[mood] || [];
+  const seasonKey = SEASON_MAP[season] || 'winter';
+  const matched = pool.filter(d => d.seasons.includes(seasonKey) && budget >= d.minBudget && budget <= d.maxBudget);
+  const row = document.getElementById('availRow');
+  if (!row) return;
+  if (matched.length === 0) {
+    row.innerHTML = `<div class="avail-chip none">No matches — try adjusting budget or season</div>`;
+  } else {
+    row.innerHTML = matched.map(d => `<div class="avail-chip">${d.emoji} ${d.name}</div>`).join('');
+  }
+  // Also update badge text below heading
+  const badge = document.getElementById('budgetFitBadge');
+  if (badge) {
+    badge.textContent = matched.length
+      ? `${matched.length} destination${matched.length>1?'s':''} match your filters`
+      : '';
+  }
 }
 
 let bAnim = null;
@@ -1540,6 +1937,7 @@ function onBudget(el) {
   budget = parseInt(el.value);
   const pct = ((budget - 1000) / 24000) * 100;
   el.style.setProperty('--pct', pct + '%');
+  el.setAttribute('aria-valuenow', budget);
   const bn = document.getElementById('budgetNum');
   const start = parseInt(bn.textContent.replace(/,/g, '')) || budget;
   const target = budget;
@@ -1550,6 +1948,7 @@ function onBudget(el) {
     let e = 1 - Math.pow(1 - p, 3);
     bn.textContent = Math.round(start + (target - start) * e).toLocaleString('en-IN');
     if (p < 1) bAnim = requestAnimationFrame(step);
+    else updateAvailBadge();
   }
   bAnim = requestAnimationFrame(step);
 }
@@ -1557,10 +1956,31 @@ document.getElementById('bSlider').style.setProperty('--pct', '31%');
 
 /* ══════════════════════
    PICK DESTINATION
+   Filters by budget + season, falls back gracefully
 ══════════════════════ */
 function pickDest() {
   const pool = DB[mood] || DB['Peace'];
-  dest = pool[Math.floor(Math.random() * pool.length)];
+  const seasonKey = SEASON_MAP[season] || 'winter';
+
+  // 1. Exact match: budget range + season
+  let filtered = pool.filter(d =>
+    d.seasons.includes(seasonKey) &&
+    budget >= d.minBudget &&
+    budget <= d.maxBudget
+  );
+
+  // 2. Fallback: season only (ignore budget)
+  if (!filtered.length) {
+    filtered = pool.filter(d => d.seasons.includes(seasonKey));
+  }
+
+  // 3. Final fallback: any destination in mood
+  if (!filtered.length) filtered = pool;
+
+  // Avoid same destination on reroll
+  const others = filtered.filter(d => d.name !== dest?.name);
+  const finalPool = others.length ? others : filtered;
+  dest = finalPool[Math.floor(Math.random() * finalPool.length)];
 }
 
 /* ══════════════════════
@@ -1573,6 +1993,7 @@ function startApp() {
   document.getElementById('nav').style.opacity = '1';
   document.getElementById('nav').style.pointerEvents = 'all';
   nav('p-home', 'nb-home');
+  updateAvailBadge();
 }
 document.getElementById('nav').style.opacity = '0';
 document.getElementById('nav').style.pointerEvents = 'none';
@@ -1580,9 +2001,10 @@ document.getElementById('nav').style.transition = 'opacity .4s';
 
 /* ══════════════════════
    LOADING
+   Tied to actual API response — minimum 2s, resolves when AI done
 ══════════════════════ */
 const phases = [
-  {t: 'Scanning hidden gems...',     s: 'Searching 15 Indian destinations'},
+  {t: 'Scanning hidden gems...',     s: 'Searching across India'},
   {t: 'Matching your vibe...',       s: 'Mood × Season × Budget'},
   {t: 'Crafting your itinerary...', s: 'AI building day-by-day plan'},
   {t: 'Weaving the mystery...',      s: 'Sealing your destination'},
@@ -1598,6 +2020,11 @@ async function goLoad() {
   const fill  = document.getElementById('roadFill');
   const aiBox = document.getElementById('aiBox');
 
+  // Minimum display time (so the animation actually shows)
+  const MIN_DURATION = 2200;
+  const startTime = Date.now();
+
+  // Animate phases independently of AI
   let pi = 0;
   const tick = setInterval(() => {
     pi++;
@@ -1608,16 +2035,19 @@ async function goLoad() {
       subEl.textContent = phases[pi].s;
       phEl.style.opacity = '1';
     }, 280);
-    fill.style.width = ((pi / phases.length) * 100) + '%';
-  }, 900);
+    fill.style.width = ((pi / (phases.length - 1)) * 85) + '%';
+  }, 700);
 
-  // AI call
-  aiBox.innerHTML = 'Connecting to AI...<span class="ai-cursor"></span>';
+  aiBox.innerHTML = 'Connecting to AI travel engine...<span class="ai-cursor" aria-hidden="true"></span>';
+
   const prompt = `You are a poetic travel writer for hidden India. Write a vivid 3-sentence travel note for ${dest.name}, ${dest.state}.
 
 Context: traveller mood "${mood}", budget ₹${budget}, duration "${dur}", travel style "${style.replace(/[^\w\s]/g, '')}".
 
 Rules: Second person, present tense. Sensory and specific. Include one hyperlocal secret tip most tourists never find. Under 75 words. Plain prose only — no headers, no lists.`;
+
+  let aiResult = null;
+  let aiError  = false;
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -1629,35 +2059,52 @@ Rules: Second person, present tense. Sensory and specific. Include one hyperloca
         messages: [{role: 'user', content: prompt}]
       })
     });
+    if (!r.ok) throw new Error('API error ' + r.status);
     const data = await r.json();
-    const txt  = data.content?.[0]?.text || '';
-    dest._ai   = txt;
+    aiResult = data.content?.[0]?.text || '';
+    dest._ai = aiResult;
 
     // Typewriter effect
     aiBox.innerHTML = '';
     const cursor = document.createElement('span');
     cursor.className = 'ai-cursor';
+    cursor.setAttribute('aria-hidden', 'true');
     aiBox.appendChild(cursor);
     let i = 0;
-    const typer = setInterval(() => {
-      if (i < txt.length) {
-        aiBox.insertBefore(document.createTextNode(txt[i]), cursor);
-        i++;
-      } else {
-        clearInterval(typer);
-        cursor.remove();
-      }
-    }, 16);
+    await new Promise(resolve => {
+      const typer = setInterval(() => {
+        if (i < aiResult.length) {
+          aiBox.insertBefore(document.createTextNode(aiResult[i]), cursor);
+          i++;
+        } else {
+          clearInterval(typer);
+          cursor.remove();
+          resolve();
+        }
+      }, 16);
+    });
   } catch (e) {
     dest._ai = null;
-    aiBox.innerHTML = `<em style="opacity:.6">Crafting your ${dest.name} journey...</em>`;
+    aiError = true;
+    aiBox.innerHTML = `
+      <div class="ai-error">
+        <span class="ai-error-ico" aria-hidden="true">⚡</span>
+        <span>AI notes unavailable — using curated notes instead.</span>
+      </div>
+      <div style="margin-top:8px;font-size:12px;color:var(--t2);font-style:italic;">${dest.notes.replace(/<[^>]+>/g,'').substring(0,120)}…</div>
+    `;
   }
 
-  setTimeout(() => {
-    clearInterval(tick);
-    fill.style.width = '100%';
-    setTimeout(goMystery, 500);
-  }, 4800);
+  // Wait for minimum duration
+  const elapsed = Date.now() - startTime;
+  if (elapsed < MIN_DURATION) {
+    await new Promise(r => setTimeout(r, MIN_DURATION - elapsed));
+  }
+
+  clearInterval(tick);
+  fill.style.width = '100%';
+  await new Promise(r => setTimeout(r, 300));
+  goMystery();
 }
 
 /* ══════════════════════
@@ -1673,22 +2120,32 @@ function goMystery() {
     const d = document.createElement('div');
     d.className = 'hint-card';
     d.style.animationDelay = (i * .15 + .1) + 's';
-    d.innerHTML = `<span class="hint-ico">${h.i}</span><div class="hint-txt"><b>Clue ${i + 1}:</b> ${h.t}</div>`;
+    d.setAttribute('role', 'listitem');
+    d.innerHTML = `<span class="hint-ico" aria-hidden="true">${h.i}</span><div class="hint-txt"><b>Clue ${i + 1}:</b> ${h.t}</div>`;
     hw.appendChild(d);
   });
 
+  // Persist countdown in sessionStorage so rerolls don't reset it
+  if (!sessionStorage.getItem('yatr_cd_start')) {
+    sessionStorage.setItem('yatr_cd_start', Date.now().toString());
+  }
+
   if (cdTimer) clearInterval(cdTimer);
-  cdSecs = 23 * 3600 + 59 * 60 + 47;
   updateCd();
-  cdTimer = setInterval(() => { cdSecs--; updateCd(); }, 1000);
+  cdTimer = setInterval(updateCd, 1000);
 
   nav('p-mystery', 'nb-mystery');
 }
 
 function updateCd() {
-  const h = Math.floor(cdSecs / 3600);
-  const m = Math.floor((cdSecs % 3600) / 60);
-  const s = cdSecs % 60;
+  const start = parseInt(sessionStorage.getItem('yatr_cd_start') || Date.now());
+  const elapsed = Math.floor((Date.now() - start) / 1000);
+  const total   = 24 * 3600;
+  const remaining = Math.max(0, total - elapsed);
+
+  const h = Math.floor(remaining / 3600);
+  const m = Math.floor((remaining % 3600) / 60);
+  const s = remaining % 60;
   document.getElementById('cdH').textContent = String(h).padStart(2, '0');
   document.getElementById('cdM').textContent = String(m).padStart(2, '0');
   document.getElementById('cdS').textContent = String(s).padStart(2, '0');
@@ -1707,6 +2164,12 @@ function goReveal() {
   document.getElementById('budgetTag').textContent = '₹' + budget.toLocaleString('en-IN');
   document.getElementById('mapName').textContent = d.name.toUpperCase();
 
+  // Set destination-specific hero image
+  const heroGrad = document.getElementById('heroGrad');
+  heroGrad.style.backgroundImage = d.heroImg
+    ? `url('${d.heroImg}')`
+    : d.bg;
+
   // Typewriter destination name
   const elD = document.getElementById('heroDest');
   elD.textContent = '';
@@ -1716,7 +2179,6 @@ function goReveal() {
     else clearInterval(iv);
   }, 40);
 
-  // Hidden gem & Three reasons
   document.getElementById('hiddenGem').innerHTML    = d.hints[d.hints.length - 1].t;
   document.getElementById('threeReasons').innerHTML = d.hints.slice(0, 3).map(h => `<div>✨ ${h.t}</div>`).join('');
 
@@ -1735,9 +2197,9 @@ function goReveal() {
   const dl = document.getElementById('dayList');
   dl.innerHTML = '';
   d.days.forEach(day => {
-    dl.innerHTML += `<div class="day-row">
+    dl.innerHTML += `<div class="day-row" role="listitem">
       <span class="day-time">${day.t}</span>
-      <div class="day-pin"></div>
+      <div class="day-pin" aria-hidden="true"></div>
       <div class="day-info"><div class="day-act">${day.act}</div><div class="day-note">${day.note}</div></div>
     </div>`;
   });
@@ -1746,8 +2208,8 @@ function goReveal() {
   const ab = document.getElementById('actBody');
   ab.innerHTML = '';
   d.acts.forEach(a => {
-    ab.innerHTML += `<div class="act-row">
-      <div class="act-ico">${a.i}</div>
+    ab.innerHTML += `<div class="act-row" role="listitem">
+      <div class="act-ico" aria-hidden="true">${a.i}</div>
       <div><div class="act-name">${a.n}</div><div class="act-desc">${a.d}</div></div>
     </div>`;
   });
@@ -1755,7 +2217,7 @@ function goReveal() {
   // Food
   const fr = document.getElementById('foodRail');
   fr.innerHTML = '';
-  d.food.forEach(f => { fr.innerHTML += `<div class="food-tag">${f}</div>`; });
+  d.food.forEach(f => { fr.innerHTML += `<div class="food-tag" role="listitem">${f}</div>`; });
 
   // AI Notes
   const notes = d._ai || d.notes;
@@ -1766,40 +2228,49 @@ function goReveal() {
 
 /* ══════════════════════
    REROLL
+   Excludes current destination name to always give something new
 ══════════════════════ */
 function reroll() {
-  const pool   = DB[mood] || DB['Peace'];
-  const others = pool.filter(d => d.name !== dest?.name);
-  dest = (others.length ? others : pool)[Math.floor(Math.random() * (others.length || pool.length))];
+  pickDest();
   goMystery();
   toast('🎲 Destination rerolled!');
 }
 
 /* ══════════════════════
    SAVE
+   Stores full dest snapshot so openSaved() is deterministic
 ══════════════════════ */
 function saveTrip() {
   const t = {
-    id: Date.now(), name: dest.name, state: dest.state,
-    mood, budget, dur, style, season, bg: dest.bg, emoji: dest.emoji,
-    date: new Date().toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'})
+    id: Date.now(),
+    name: dest.name, state: dest.state,
+    mood, budget, dur, style, season,
+    bg: dest.bg,
+    heroImg: dest.heroImg || null,
+    emoji: dest.emoji,
+    date: new Date().toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'}),
+    // Store full destination data snapshot so we don't rely on DB lookup
+    destSnapshot: JSON.parse(JSON.stringify(dest))
   };
   saved = saved.filter(s => !(s.name === t.name && s.mood === t.mood));
   saved.unshift(t);
-  localStorage.setItem('yatr_v1', JSON.stringify(saved));
+  localStorage.setItem('yatr_v2', JSON.stringify(saved));
   toast('💾 Saved to your trips!');
 }
 
 function renderSaved() {
   const g = document.getElementById('savedGrid');
   if (!saved.length) {
-    g.innerHTML = '<div class="empty-state"><div class="empty-ico">🗺️</div><div class="empty-msg">No saved trips yet.<br>Generate one and tap Save.</div></div>';
+    g.innerHTML = '<div class="empty-state"><div class="empty-ico" aria-hidden="true">🗺️</div><div class="empty-msg">No saved trips yet.<br>Generate one and tap Save.</div></div>';
     return;
   }
   g.innerHTML = '';
   saved.forEach(t => {
-    g.innerHTML += `<div class="trip-card" onclick="openSaved(${t.id})">
-      <div class="tc-image" style="background:${t.bg}">
+    const bgStyle = t.heroImg
+      ? `background-image:url('${t.heroImg}')`
+      : `background:${t.bg}`;
+    g.innerHTML += `<div class="trip-card" role="listitem" onclick="openSaved(${t.id})" tabindex="0" onkeydown="if(event.key==='Enter')openSaved(${t.id})" aria-label="Open trip to ${t.name}">
+      <div class="tc-image" style="${bgStyle}">
         <div class="tc-image-dim"></div>
         <div class="tc-meta">
           <div class="tc-name serif">${t.name}</div>
@@ -1818,29 +2289,123 @@ function renderSaved() {
   });
 }
 
+/* Fixed: Use stored snapshot, not DB lookup */
 function openSaved(id) {
   const t = saved.find(s => s.id === id);
   if (!t) return;
   mood   = t.mood;
   budget = t.budget;
-  const pool = DB[mood] || DB['Peace'];
-  dest = pool.find(d => d.name === t.name) || pool[0];
+  dur    = t.dur || '3 Days';
+  style  = t.style || 'Solo 🧘';
+  season = t.season || 'Oct – Feb ❄️';
+
+  // Use the saved snapshot if available, otherwise fall back to DB
+  if (t.destSnapshot) {
+    dest = t.destSnapshot;
+  } else {
+    const pool = DB[mood] || DB['Peace'];
+    dest = pool.find(d => d.name === t.name) || pool[0];
+  }
   goReveal();
 }
 
 /* ══════════════════════
-   SHARE
+   SHARE — Canvas card
 ══════════════════════ */
 function shareTrip() {
-  const txt = `🇮🇳 Going on a mystery trip with Yatr!\n📍 Destination: ???\n✈ Mood: ${mood} | ₹${budget.toLocaleString('en-IN')} | ${dur}\n🔮 Reveals in 24 hours...\n\n#Yatr #MysteryTravel #HiddenIndia`;
-  if (navigator.share) {
-    navigator.share({title: 'My Mystery India Trip', text: txt}).catch(() => {});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(txt).then(() => toast('✓ Copied! Share anywhere 🌏'));
+  const canvas  = document.getElementById('shareCanvas');
+  const ctx     = canvas.getContext('2d');
+  const W = 320, H = 480;
+  canvas.width  = W;
+  canvas.height = H;
+
+  // Background
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, '#2E1C14');
+  grad.addColorStop(1, '#1C1410');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Destination colour accent strip
+  ctx.fillStyle = 'rgba(194,113,79,0.15)';
+  ctx.fillRect(0, 0, W, 6);
+
+  // App name
+  ctx.fillStyle = '#C2714F';
+  ctx.font = 'bold 13px "DM Sans", sans-serif';
+  ctx.letterSpacing = '3px';
+  ctx.fillText('YATR · MYSTERY TRAVEL', 28, 42);
+
+  // Lock icon area
+  ctx.font = '52px serif';
+  ctx.fillText('🔒', W/2 - 30, 130);
+
+  // "?" destination
+  ctx.fillStyle = 'rgba(194,113,79,0.25)';
+  ctx.font = 'italic 80px "Cormorant Garamond", serif';
+  ctx.fillText('???', W/2 - 48, 220);
+
+  // Divider
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(28, 250); ctx.lineTo(W - 28, 250);
+  ctx.stroke();
+
+  // Mood and budget
+  ctx.fillStyle = 'rgba(242,235,224,0.65)';
+  ctx.font = '12px "DM Sans", sans-serif';
+  ctx.letterSpacing = '0px';
+  ctx.fillText(`Mood: ${mood}`, 28, 278);
+  ctx.fillText(`Budget: ₹${budget.toLocaleString('en-IN')}`, 28, 298);
+  ctx.fillText(`Duration: ${dur}`, 28, 318);
+  ctx.fillText(`Season: ${season}`, 28, 338);
+
+  // Reveal hint
+  ctx.fillStyle = 'rgba(242,235,224,0.35)';
+  ctx.font = 'italic 11px "Cormorant Garamond", serif';
+  ctx.fillText('Destination sealed · reveals in 24 hours', 28, 380);
+
+  // CTA
+  ctx.fillStyle = '#C2714F';
+  ctx.font = 'bold 11px "DM Sans", sans-serif';
+  ctx.fillText('Can you guess where I\'m going? 🌏', 28, 420);
+
+  ctx.fillStyle = 'rgba(242,235,224,0.2)';
+  ctx.font = '10px "DM Sans", sans-serif';
+  ctx.fillText('Made with Yatr — Mystery Travel India', 28, 455);
+
+  document.getElementById('shareModal').classList.add('open');
+}
+
+function closeShareModal() {
+  document.getElementById('shareModal').classList.remove('open');
+}
+
+function downloadShareCard() {
+  const canvas = document.getElementById('shareCanvas');
+  const link = document.createElement('a');
+  link.download = `yatr-mystery-${dest?.name?.toLowerCase().replace(/\s/g,'-') || 'trip'}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  toast('🖼️ Share card downloaded!');
+  closeShareModal();
+}
+
+function copyShareText() {
+  const txt = `🇮🇳 Going on a mystery trip with Yatr!\n📍 Destination: ???\n✈ Mood: ${mood} | ₹${budget.toLocaleString('en-IN')} | ${dur}\n🔮 Reveals in 24 hours...\n\nCan you guess where I'm going? 🌏\n\n#Yatr #MysteryTravel #HiddenIndia`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(txt).then(() => { toast('✓ Copied! Share anywhere 🌏'); closeShareModal(); });
   } else {
     toast('#Yatr #HiddenIndia');
+    closeShareModal();
   }
 }
+
+/* Keyboard close for modal */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeShareModal();
+});
 
 /* ══════════════════════
    TOAST
@@ -1852,6 +2417,37 @@ function toast(msg) {
   clearTimeout(el._t);
   el._t = setTimeout(() => el.classList.remove('show'), 3000);
 }
+
+/* ══════════════════════
+   SERVICE WORKER (PWA)
+══════════════════════ */
+if ('serviceWorker' in navigator) {
+  // Register an inline SW that caches app shell
+  const swCode = `
+const CACHE = 'yatr-v1';
+const SHELL = [
+  self.location.pathname,
+  'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap'
+];
+self.addEventListener('install', e => e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL).catch(()=>{}))));
+self.addEventListener('fetch', e => {
+  if (e.request.url.includes('api.anthropic.com')) return;
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request).then(res => {
+    if (res.ok && !e.request.url.startsWith('chrome-extension')) {
+      const clone = res.clone();
+      caches.open(CACHE).then(c => c.put(e.request, clone));
+    }
+    return res;
+  }).catch(() => caches.match(self.location.pathname))));
+});
+  `;
+  const blob = new Blob([swCode], {type: 'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+
+/* Init availability preview */
+updateAvailBadge();
 </script>
 </body>
 </html>
